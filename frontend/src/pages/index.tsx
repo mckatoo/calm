@@ -1,4 +1,31 @@
+import { GetServerSideProps } from "next"
+import { getSession, signIn, useSession } from "next-auth/react"
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req })
+
+  if (session) return {
+    redirect: {
+      destination: "/app",
+      permanent: false
+    }
+  }
+
+  return {
+    props: {}
+  }
+}
+
 export default function Home() {
+
+  function handleGoogleSignIn() {
+    signIn('google')
+  }
+
+  function handleFacebookSignIn() {
+    signIn('facebook')
+  }
+
   return (
     <div className='grid md:grid-cols-2 text-white font-sans font-bold'>
       <div className="grid grid-rows-6 grid-flow-col min-h-screen items-center justify-items-start">
@@ -42,19 +69,16 @@ export default function Home() {
           </div>
           <div className="text-center  text-sm font-sans pt-4 grid-cols-3 content-center space-x-4">
             <button
+              onClick={handleGoogleSignIn}
               type="button"
               className="p-2 bg-red-700 hover:bg-blue-400 rounded-md text-white">
               GOOGLE
             </button>
             <button
+              onClick={handleFacebookSignIn}
               type="button"
               className="p-2 bg-blue-800 hover:bg-blue-400 rounded-md text-white">
               FACEBOOK
-            </button>
-            <button
-              type="button"
-              className="p-2 bg-sky-600 hover:bg-blue-400 rounded-md text-white">
-              TWITTER
             </button>
           </div>
         </div>
