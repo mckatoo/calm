@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 }
 
-export default function Home() {
+export default function Login() {
 
   function handleGoogleSignIn() {
     signIn('google')
@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <div className='grid md:grid-cols-2 text-white font-sans font-bold'>
-      <div className="grid grid-rows-6 grid-flow-col min-h-screen items-center justify-items-start">
+      <div className="grid grid-rows-6 grid-flow-col min-h-screen items-center justify-items-center">
         <div className="row-span-4 px-10 row-start-2 text-4xl">
           <p className="text-center">
             WELCOME
