@@ -22,6 +22,7 @@ export default function SignUp() {
   const handleSignUp = async (event: FormEvent) => {
     event.preventDefault()
     const user = {
+      name: event.currentTarget['name']?.value,
       email: event.currentTarget['email']?.value,
       password: event.currentTarget['password']?.value,
       repeatPassword: event.currentTarget['repeat-password']?.value,
@@ -52,6 +53,15 @@ export default function SignUp() {
           <p className="text-center">
             SIGN UP
           </p>
+          <div>
+            <label className="text-sm font-sans font-medium">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              className="w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
+          </div>
           <div>
             <label className="text-sm font-sans font-medium">
               Email

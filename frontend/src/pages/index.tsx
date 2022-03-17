@@ -1,6 +1,8 @@
 import { GetServerSideProps } from "next"
-import { getSession, signIn, useSession } from "next-auth/react"
-import { FormEvent } from "react"
+import { getSession, signIn } from "next-auth/react"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { FormEvent, useState } from "react"
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
@@ -18,6 +20,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 }
 
 export default function Login() {
+  const routes = useRouter()
+  const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState('');
 
   function handleGoogleSignIn() {
     signIn('google')
@@ -33,14 +38,20 @@ export default function Login() {
       username: event.currentTarget['username']?.value,
       password: event.currentTarget['password']?.value,
     }
-    const response = await fetch("http://localhost:3000/api/user/login", {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-Type": "application/json"
-      }
+
+    const result = await signIn('credentials', {
+      ...user,
+      redirect: false,
+      callbackUrl: `${routes.query?.callbackUrl || ''}`
     })
-    console.log('response', await response.json())
+
+    if (result?.url) {
+      return routes.push(result?.url)
+    }
+
+    setLoading(false)
+
+    setFormError('username or password is invalid')    
   }
 
   return (
@@ -71,9 +82,11 @@ export default function Login() {
               <a href="" className="text-sm font-sans font-medium text-gray-600 underline">
                 {'Forgot password?'}
               </a>
-              <a href="/signup" className="text-right text-sm font-sans font-medium text-gray-400 underline">
-                {"Don't have an account? Sign up"}
-              </a>
+              <Link href="/signup">
+                <a className="text-right text-sm font-sans font-medium text-gray-400 underline">
+                  {"Don't have an account? Sign up"}
+                </a>
+              </Link>
             </div>
           </div>
 

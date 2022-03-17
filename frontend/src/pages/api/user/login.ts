@@ -15,7 +15,8 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
   const newToken = jwt.sign({ user_id: user.id }, process.env.NEXTAUTH_SECRET, {
     expiresIn: 3600
   });
-  return res.status(200).json({ token: newToken });
+
+  return res.status(200).json({ token: newToken, ...user });
 }
 
 export default login
