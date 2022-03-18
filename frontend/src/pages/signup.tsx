@@ -1,6 +1,7 @@
 import { User } from "@prisma/client"
 import { GetServerSideProps } from "next"
 import { getSession, signIn } from "next-auth/react"
+import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
@@ -19,6 +20,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 }
 
 export default function SignUp() {
+  const routes = useRouter()
+  
   const handleSignUp = async (event: FormEvent) => {
     event.preventDefault()
     const user = {
@@ -37,12 +40,10 @@ export default function SignUp() {
     })
 
     if (response.ok) {
-      return {
-        redirect: {
-          destination: "/app",
-          permanent: false
-        }
-      }
+      await signIn('credentials', {
+        ...user,
+        callbackUrl: '/'
+      })
     }
   }
 

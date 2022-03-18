@@ -33,8 +33,6 @@ export default NextAuth({
 
         const data = await response.json()
 
-        console.log('data', data)
-
         if (data.token) {
           return data
         } else {
@@ -46,20 +44,9 @@ export default NextAuth({
   ],
   callbacks: {
     session: async ({ session, token, user }) => {
-      console.log('token', token)
-      console.log('user', user)
-
       return session
     },
     jwt: async ({ token, user, account, profile, isNewUser }) => {
-      console.log({ token, user, account, profile, isNewUser })
-      // if (user) {
-      //   token.id = user.id
-      //   token.email = user.email
-      //   token.name = user.username as string
-      //   token.jwt = user.jwt
-      // }
-
       return token
     }
   }

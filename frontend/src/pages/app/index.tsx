@@ -12,8 +12,6 @@ const App = () => {
     callbackUrl: "/"
   })
 
-  console.log('session', session)
-
   return <div className="text-white">
     {!!session.user.image &&
       <Image
