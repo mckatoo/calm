@@ -1,11 +1,19 @@
 import { signOut, useSession } from "next-auth/react";
 import Container from "../../components/Container";
+import Loader from "../../components/Loader";
 import SideMenu from "../../components/SideMenu";
 
 const App = () => {
   const { data: session, status } = useSession()
 
-  if (status === "loading") return <div>Loading...</div>
+  if (status === "loading")
+    return (
+      <div className="bg-white flex align-center justify-center">
+        <Loader
+          className="h-40 w-40"
+        />
+      </div>
+    )
 
   if (!session) return null
 
