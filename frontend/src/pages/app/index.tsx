@@ -21,12 +21,18 @@ const App = () => {
     callbackUrl: "/"
   })
 
-  return <>
-    <SideMenu />
-    <Container>
-
-    </Container>
-  </>
+  return (
+    <body className="text-orange-50">
+      <main>
+        <div className="flex flex-col md:flex-row">
+          <SideMenu />
+          <Container>
+            Conteúdo
+          </Container>
+        </div>
+      </main>
+    </body>
+  )
 
   // return <div className="text-white">
   //   {!!session.user.image &&
