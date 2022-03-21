@@ -11,8 +11,8 @@ const Logo = ({
   hideOnMobile = false
 }: LogoProps) => {
   const strokeColor = color === 'white' ? '#282220' : '#E4E4E4'
-  const large = hideOnMobile ? 'w-[2rem]' : 'w-[10rem]'
-  const normal = hideOnMobile ? 'w-[2rem]' : 'w-[5rem]'
+  const large = hideOnMobile ? 'w-[2rem]' : 'w-[6rem]'
+  const normal = hideOnMobile ? 'w-[2rem]' : 'w-[3rem]'
   const wrapperSize = size === 'large' ? large : normal
 
   return (
