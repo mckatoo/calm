@@ -19,10 +19,6 @@ const App = () => {
 
   if (!session) return null
 
-  const handleSignOut = () => signOut({
-    callbackUrl: "/"
-  })
-
   const portifolios = [
     {
       id: '3alskfjsdj',
