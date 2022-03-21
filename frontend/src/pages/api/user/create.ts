@@ -7,13 +7,13 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
   
   if (repeatPassword !== password) return res.status(400).json({ error: "Password and Repeat Password do not match" })
 
-  const user = await prisma.user.findMany({
+  const user = await prisma.user.findFirst({
     where: {
       OR: [{ username }, { email }]
     }
   })
 
-  if (!!user.length) return res.status(400).json({ error: "User already exists" })
+  if (!!user) return res.status(400).json({ error: "User already exists" })
 
   const saltRounds = 10;
   const salt = await bcrypt.genSalt(saltRounds);
