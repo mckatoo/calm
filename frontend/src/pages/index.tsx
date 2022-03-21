@@ -3,6 +3,7 @@ import { getSession, signIn } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
+import Loader from "../components/Loader"
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
@@ -51,8 +52,16 @@ export default function Login() {
 
     setLoading(false)
 
-    setFormError('username or password is invalid')    
+    setFormError('username or password is invalid')
   }
+
+  if (loading) return (
+    <div className="bg-white flex align-center justify-center">
+      <Loader
+        className="h-40 w-40"
+      />
+    </div>
+  )
 
   return (
     <div className='grid md:grid-cols-2 text-white font-sans font-bold'>
@@ -139,6 +148,24 @@ export default function Login() {
           <p>ORGANIZE YOUR CRYPTOCURRENCIES.</p>
         </div>
       </div>
+
+      {!!formError &&
+        <div className="fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-red-700 text-orange-50 font-bold text-xs">
+          <div className="w-7">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          {formError.toUpperCase()}
+        </div>
+      }
     </div>
   )
 }
