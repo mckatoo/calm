@@ -27,7 +27,7 @@ const TopMenu = () => {
           absolute top-10 p-2 w-full bg-slate-900
           ${isOpen ? `visible` : `hidden`}
         `}>
-          <Link href={'/'}>
+          <Link href={'/app/profile'}>
             <a className='hover:bg-gray-800 rounded-md block py-2'>Perfil</a>
           </Link>
           <button className='hover:bg-gray-800 rounded-md block w-full  py-2' onClick={() => signOut()}>Sair</button>
