@@ -22,13 +22,6 @@ const SideMenu = () =>
             </a>
           </Link>
         </li>
-        <li className="py-2">
-          <Link href="/">
-            <a>
-              <span className="">Configurações</span>
-            </a>
-          </Link>
-        </li>
       </ul>
     </div>
   </div>
