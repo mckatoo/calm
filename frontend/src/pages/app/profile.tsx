@@ -11,29 +11,41 @@ const Profile = () => {
   const [formSuccess, setFormSuccess] = useState('');
   const [binance, setBinance] = useState<Exchanges>();
 
-  const getExchanges = async () => {
-    const response = await fetch("http://localhost:3000/api/exchanges", {
-      method: "POST",
-      body: JSON.stringify({ userId: session.user['userId'] }),
-      headers: {
-        "Content-Type": "application/json"
+  useEffect(
+    () => {
+      const getExchanges = async () => {
+        if (!session) return
+
+        const response = await fetch("http://localhost:3000/api/exchanges", {
+          method: "POST",
+          body: JSON.stringify({ userId: session.user['userId'] }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+
+        if (!response.ok) {
+          const error = (await response.json()).error
+          !!error && setFormError(error)
+        } else {
+          const exchanges: Exchanges[] = await response.json()
+
+          const binanceExchanges: Exchanges = exchanges.find(exchange => exchange.name === 'binance')
+          setBinance(binanceExchanges)
+        }
       }
-    })
+      getExchanges()
+    }, [session]
+  );
 
-    if (!response.ok) {
-      const error = (await response.json()).error
-      !!error && setFormError(error)
-    } else {
-      const exchanges: Exchanges[] = await response.json()
-
-      const binanceExchanges: Exchanges = exchanges.find(exchange => exchange.name === 'binance')
-      setBinance(binanceExchanges)
-    }
-  }
-
+  // UseEffect cleanup function
   useEffect(() => {
-    !!session && getExchanges()
-  });
+    return () => {
+      setFormError('')
+      setFormSuccess('')
+      setBinance(undefined)
+    }
+  }, [])
 
   const updatePassword = async (event: FormEvent) => {
     event.preventDefault()
