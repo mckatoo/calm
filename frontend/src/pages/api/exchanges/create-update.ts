@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { prisma } from "../../../lib/prisma"
+import * as bcrypt from 'bcrypt'
 
 const createOrUpdate = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -9,6 +10,11 @@ const createOrUpdate = async (req: NextApiRequest, res: NextApiResponse) => {
   } = req.body
 
   if (!binanceKey) return res.status(400).json({ error: "Api Key required" })
+
+  const saltRounds = 5;
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hashedBinanceKey = await bcrypt.hash(binanceKey, salt);
+  const hashedBinanceSecret = await bcrypt.hash(binanceSecret, salt);
 
   const exchanges = await prisma.exchanges.findFirst({
     where: {
@@ -21,8 +27,8 @@ const createOrUpdate = async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         userId,
         name: 'binance',
-        apiKey: binanceKey,
-        secretKey: binanceSecret
+        apiKey: hashedBinanceKey,
+        secretKey: hashedBinanceSecret
       }
     })
     return res.status(201).json({})
@@ -32,8 +38,8 @@ const createOrUpdate = async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         userId,
         name: 'binance',
-        apiKey: binanceKey,
-        secretKey: binanceSecret
+        apiKey: hashedBinanceKey,
+        secretKey: hashedBinanceSecret
       }
     })
     return res.status(204).end()
