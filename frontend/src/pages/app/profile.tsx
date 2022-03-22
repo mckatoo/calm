@@ -8,6 +8,7 @@ import SideMenu from '../../components/SideMenu'
 const Profile = () => {
   const { data: session, status } = useSession()
   const [formError, setFormError] = useState('');
+  const [formSuccess, setFormSuccess] = useState('');
 
   if (status === "loading")
     return (
@@ -63,6 +64,8 @@ const Profile = () => {
       const error = (await response.json()).error
       !!error && setFormError(error)
     }
+
+    setFormSuccess('Exchanges updated successfully')
   }
 
   return (
@@ -70,13 +73,10 @@ const Profile = () => {
       <div className="flex flex-col md:flex-row">
         <SideMenu />
         <Container>
-          <div className='mx-3 pt-3'>
+          <div className='mx-3 pt-3 flex flex-col gap-4'>
             <div className='bg-stone-900 p-4 rounded-md flex flex-col gap-6'>
               <form onSubmit={updateExchanges}>
-                <div className='flex flex-row flex-nowrap justify-between'>
-                  <h2 className='text-2xl pb-2'>Exchanges</h2>
-                  <button type='submit' className='px-4 pt-2 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
-                </div>
+                <h2 className='text-2xl pb-2'>Exchanges</h2>
                 <fieldset className='flex gap-4 p-4 border-2 border-solid rounded-md'>
                   <legend className='px-2' >Binance</legend>
                   <div className='flex gap-4'>
@@ -123,13 +123,15 @@ const Profile = () => {
                     </div>
                   </div>
                 </fieldset>
-              </form>
 
+                <button type='submit' className='px-4 p-2 w-full content-center mt-4 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
+
+              </form>
+            </div>
+
+            <div className='bg-stone-900 p-4 rounded-md flex flex-col gap-6'>
               <form onSubmit={updatePassword}>
-                <div className='flex pb-3 flex-row flex-nowrap justify-between'>
-                  <h2 className='text-2xl pb-2'>Password</h2>
-                  <button type='submit' className='px-4 pt-2 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
-                </div>
+                <h2 className='text-2xl pb-2'>Password</h2>
                 <fieldset className='flex gap-4 p-4 border-2 border-solid rounded-md'>
                   <div className='flex gap-4'>
                     <div>
@@ -152,6 +154,9 @@ const Profile = () => {
                     </div>
                   </div>
                 </fieldset>
+
+                <button type='submit' className='px-4 p-2 w-full content-center mt-4 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
+
               </form>
             </div>
           </div>
@@ -174,6 +179,25 @@ const Profile = () => {
             </svg>
           </div>
           {formError.toUpperCase()}
+        </div>
+      }
+      {!!formSuccess &&
+        <div
+          onClick={() => setFormSuccess('')}
+          className="z-50 cursor-pointer fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-green-600 text-orange-50 font-bold text-xs">
+          <div className="w-7">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          {formSuccess.toUpperCase()}
         </div>
       }
     </main>
