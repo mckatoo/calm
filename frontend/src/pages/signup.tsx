@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 export default function SignUp() {
   const routes = useRouter()
   const [formError, setFormError] = useState('');
-  
+
   const handleSignUp = async (event: FormEvent) => {
     event.preventDefault()
     const user = {
@@ -125,7 +125,9 @@ export default function SignUp() {
         </div>
       </div>
       {!!formError &&
-        <div className="fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-red-700 text-orange-50 font-bold text-xs">
+        <div
+          onClick={() => setFormError('')}
+          className="z-50 cursor-pointer fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-red-700 text-orange-50 font-bold text-xs">
           <div className="w-7">
             <svg
               xmlns="http://www.w3.org/2000/svg"
