@@ -1,5 +1,6 @@
+import { Exchanges } from '@prisma/client'
 import { signOut, useSession } from 'next-auth/react'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import Container from '../../components/Container'
 import Loader from '../../components/Loader'
 import SideMenu from '../../components/SideMenu'
@@ -8,17 +9,31 @@ const Profile = () => {
   const { data: session, status } = useSession()
   const [formError, setFormError] = useState('');
   const [formSuccess, setFormSuccess] = useState('');
+  const [binance, setBinance] = useState<Exchanges>();
 
-  if (status === "loading")
-    return (
-      <div className="bg-white flex align-center justify-center">
-        <Loader
-          className="h-40 w-40"
-        />
-      </div>
-    )
+  const getExchanges = async () => {
+    const response = await fetch("http://localhost:3000/api/exchanges", {
+      method: "POST",
+      body: JSON.stringify({ userId: session.user['userId'] }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
 
-  if (!session) return null
+    if (!response.ok) {
+      const error = (await response.json()).error
+      !!error && setFormError(error)
+    } else {
+      const exchanges: Exchanges[] = await response.json()
+
+      const binanceExchanges: Exchanges = exchanges.find(exchange => exchange.name === 'binance')
+      setBinance(binanceExchanges)
+    }
+  }
+
+  useEffect(() => {
+    !!session && getExchanges()
+  });
 
   const updatePassword = async (event: FormEvent) => {
     event.preventDefault()
@@ -48,8 +63,8 @@ const Profile = () => {
     event.preventDefault()
     const exchanges = {
       userId: session.user['userId'],
-      binanceKey: event.currentTarget['binance-key']?.value,
-      binanceSecret: event.currentTarget['binance-secret']?.value
+      binanceKey: binance.apiKey,
+      binanceSecret: binance.secretKey
     }
     const response = await fetch("http://localhost:3000/api/exchanges/create-update", {
       method: "POST",
@@ -66,6 +81,17 @@ const Profile = () => {
 
     setFormSuccess('Exchanges updated successfully')
   }
+
+  if (status === "loading")
+    return (
+      <div className="bg-white flex align-center justify-center">
+        <Loader
+          className="h-40 w-40"
+        />
+      </div>
+    )
+
+  if (!session) return null
 
   return (
     <main className="text-orange-50">
@@ -84,6 +110,8 @@ const Profile = () => {
                         Api Key
                       </label>
                       <input
+                        defaultValue={binance?.apiKey}
+                        onChange={event => setBinance({ ...binance, apiKey: event.currentTarget.value })}
                         type="password"
                         name="binance-key"
                         className="w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
@@ -93,6 +121,8 @@ const Profile = () => {
                         Secret Key
                       </label>
                       <input
+                        defaultValue={binance?.secretKey}
+                        onChange={event => setBinance({ ...binance, secretKey: event.currentTarget.value })}
                         type="password"
                         name="binance-secret"
                         className="w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
