@@ -36,7 +36,7 @@ const createOrUpdate = async (req: NextApiRequest, res: NextApiResponse) => {
         secretKey: binanceSecret
       }
     })
-    return res.status(204).json({})
+    return res.status(204).end()
   }
 
 }
