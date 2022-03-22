@@ -16,30 +16,29 @@ const createOrUpdate = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   })
 
-  console.log('exchanges', exchanges)
+  if (!exchanges) {
+    await prisma.exchanges.create({
+      data: {
+        userId,
+        name: 'binance',
+        apiKey: binanceKey,
+        secretKey: binanceSecret
+      }
+    })
+    return res.status(201).json({})
+  } else {
+    await prisma.exchanges.update({
+      where: { id: exchanges.id },
+      data: {
+        userId,
+        name: 'binance',
+        apiKey: binanceKey,
+        secretKey: binanceSecret
+      }
+    })
+    return res.status(204).json({})
+  }
 
-  // if (!exchanges) {
-  //   await prisma.exchanges.create({
-  //     data: {
-  //       userId,
-  //       name: 'binance',
-  //       apiKey: binanceKey,
-  //       secretKey: binanceSecret
-  //     }
-  //   })
-  // } else {
-  //   await prisma.exchanges.update({
-  //     where: { id: exchanges.id },
-  //     data: {
-  //       userId,
-  //       name: 'binance',
-  //       apiKey: binanceKey,
-  //       secretKey: binanceSecret
-  //     }
-  //   })
-  // }
-
-  return res.status(201).json({})
 }
 
 export default createOrUpdate
