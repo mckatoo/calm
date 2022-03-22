@@ -42,11 +42,27 @@ const Profile = () => {
       const error = (await response.json()).error
       !!error && setFormError(error)
     }
-
   }
 
-  const updateExchanges = (event: FormEvent) => {
-    throw new Error('Function not implemented.')
+  const updateExchanges = async (event: FormEvent) => {
+    event.preventDefault()
+    const exchanges = {
+      userId: session.user['userId'],
+      binanceKey: event.currentTarget['binance-key']?.value,
+      binanceSecret: event.currentTarget['binance-secret']?.value
+    }
+    const response = await fetch("http://localhost:3000/api/exchanges/create-update", {
+      method: "POST",
+      body: JSON.stringify(exchanges),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    if (!response.ok) {
+      const error = (await response.json()).error
+      !!error && setFormError(error)
+    }
   }
 
   return (
@@ -70,7 +86,7 @@ const Profile = () => {
                       </label>
                       <input
                         type="password"
-                        name="binande-key"
+                        name="binance-key"
                         className="w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
                     </div>
                     <div>
@@ -142,7 +158,9 @@ const Profile = () => {
         </Container>
       </div>
       {!!formError &&
-        <div className="fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-red-700 text-orange-50 font-bold text-xs">
+        <div
+          onClick={() => setFormError('')}
+          className="z-50 cursor-pointer fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-red-700 text-orange-50 font-bold text-xs">
           <div className="w-7">
             <svg
               xmlns="http://www.w3.org/2000/svg"
