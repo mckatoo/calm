@@ -26,7 +26,7 @@ const update = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   })
 
-  return res.status(204).json({})
+  return res.status(204).end()
 }
 
 export default update
