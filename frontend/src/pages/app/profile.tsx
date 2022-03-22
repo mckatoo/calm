@@ -4,7 +4,6 @@ import Container from '../../components/Container'
 import Loader from '../../components/Loader'
 import SideMenu from '../../components/SideMenu'
 
-
 const Profile = () => {
   const { data: session, status } = useSession()
   const [formError, setFormError] = useState('');
@@ -124,7 +123,7 @@ const Profile = () => {
                   </div>
                 </fieldset>
 
-                <button type='submit' className='px-4 p-2 w-full content-center mt-4 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
+                <button type='submit' className='px-4 p-2 w-full place-content-center mt-4 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
 
               </form>
             </div>
@@ -155,7 +154,7 @@ const Profile = () => {
                   </div>
                 </fieldset>
 
-                <button type='submit' className='px-4 p-2 w-full content-center mt-4 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
+                <button type='submit' className='px-4 p-2 w-full place-content-center mt-4 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
 
               </form>
             </div>
