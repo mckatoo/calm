@@ -25,8 +25,8 @@ model User {
 model Exchanges {
   id         String   @id @default(uuid())
   name       String   @unique
-  apiKey     String
-  secretKey  String?
+  apiKey     String   @db.VarChar(200)
+  secretKey  String?  @db.VarChar(200)
   passphrase String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { prisma } from "../../../lib/prisma"
 import * as bcrypt from "bcrypt"
 
-const update = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { username, email, password, repeatPassword } = req.body
   
   if (repeatPassword !== password) return res.status(400).json({ error: "Password and Repeat Password do not match" })
@@ -29,4 +29,4 @@ const update = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(204).end()
 }
 
-export default update
+export default handler

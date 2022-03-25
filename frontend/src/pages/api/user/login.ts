@@ -3,7 +3,7 @@ import { prisma } from "../../../lib/prisma"
 import * as jwt from "jsonwebtoken"
 import * as bcrypt from 'bcrypt'
 
-const login = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { username, password } = req.body
   
   const user = await prisma.user.findUnique({
@@ -23,4 +23,4 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json({ token: newToken, ...user });
 }
 
-export default login
+export default handler
