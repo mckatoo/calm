@@ -4,7 +4,8 @@ const nextConfig = {
   images: {
     domains: [
       'lh3.googleusercontent.com',
-      'platform-lookaside.fbsbx.com'
+      'platform-lookaside.fbsbx.com',
+      's2.coinmarketcap.com'
     ],
   },
 }

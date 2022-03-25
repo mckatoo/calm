@@ -9,11 +9,13 @@
     "lint": "next lint",
     "prisma:pull": "dotenv -e .env.local -- npx prisma db pull",
     "prisma:push": "dotenv -e .env.local -- npx prisma db push",
-    "prisma:migrate": "dotenv -e .env.local -- npx prisma migrate dev"
+    "prisma:migrate": "dotenv -e .env.local -- npx prisma migrate dev",
+    "prisma:migrate:reset": "dotenv -e .env.local -- npx prisma migrate reset"
   },
   "dependencies": {
     "@prisma/client": "3.10.0",
     "bcrypt": "5.0.1",
+    "binance": "2.0.27",
     "jsonwebtoken": "8.5.1",
     "next": "12.1.0",
     "next-auth": "4.2.1",

@@ -11,34 +11,6 @@ const Profile = () => {
   const [formSuccess, setFormSuccess] = useState('');
   const [binance, setBinance] = useState<Exchanges>();
 
-  useEffect(
-    () => {
-      const getExchanges = async () => {
-        if (!session) return
-
-        const response = await fetch("http://localhost:3000/api/exchanges", {
-          method: "POST",
-          body: JSON.stringify({ userId: session.user['userId'] }),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-
-        if (!response.ok) {
-          const error = (await response.json()).error
-          !!error && setFormError(error)
-        } else {
-          const exchanges: Exchanges[] = await response.json()
-
-          const binanceExchanges: Exchanges = exchanges.find(exchange => exchange.name === 'binance')
-          setBinance(binanceExchanges)
-        }
-      }
-      getExchanges()
-    }, [session]
-  );
-
-  // UseEffect cleanup function
   useEffect(() => {
     return () => {
       setFormError('')
@@ -122,9 +94,9 @@ const Profile = () => {
                         Api Key
                       </label>
                       <input
-                        defaultValue={binance?.apiKey}
+                        defaultValue="ENCRYPTED VALUE"
                         onChange={event => setBinance({ ...binance, apiKey: event.currentTarget.value })}
-                        type="password"
+                        type="text"
                         name="binance-key"
                         className="w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
                     </div>
@@ -133,9 +105,9 @@ const Profile = () => {
                         Secret Key
                       </label>
                       <input
-                        defaultValue={binance?.secretKey}
+                        defaultValue="ENCRYPTED VALUE"
                         onChange={event => setBinance({ ...binance, secretKey: event.currentTarget.value })}
-                        type="password"
+                        type="text"
                         name="binance-secret"
                         className="w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
                     </div>

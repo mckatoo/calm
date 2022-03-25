@@ -1,12 +1,44 @@
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 
 import Container from '../../components/Container'
 import Loader from '../../components/Loader'
-import PortifolioItem from '../../components/PortifolioItem'
+import PortifolioItem, { PortifolioItemProps } from '../../components/PortifolioItem'
 import SideMenu from '../../components/SideMenu'
 
 const App = () => {
   const { data: session, status } = useSession()
+
+  const [portifolios, setPortifolios] = useState<PortifolioItemProps[]>([])
+  const [formError, setFormError] = useState('');
+  const [formSuccess, setFormSuccess] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getBalances = async () => {
+      if (!session) return
+
+      setLoading(true)
+      const response = await fetch("http://localhost:3000/api/exchanges/binance/balance", {
+        method: "POST",
+        body: JSON.stringify({ userId: session.user['userId'] }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+
+      if (!response.ok) {
+        const error = (await response.json()).error
+        !!error && setFormError(error)
+      } else {
+        const balances = await response.json()
+        setPortifolios(balances)
+        setLoading(false)
+      }
+    }
+    getBalances()
+    setPortifolios([])
+  }, [session]);
 
   if (status === "loading")
     return (
@@ -19,41 +51,69 @@ const App = () => {
 
   if (!session) return null
 
-  const portifolios = [
-    {
-      id: '3alskfjsdj',
-      name: 'Bitcoin',
-      image: '/images/bitcoin.svg',
-      quantity: 2,
-      price: 41299.20,
-      averagePrice: 45865.78,
-      roi: 2.5
-    },
-    {
-      id: 'fas4wedvsfkljlsdkjv',
-      name: 'Ethereum',
-      image: '/images/ethereum.svg',
-      quantity: 2,
-      price: 2859.31,
-      averagePrice: 2790.45,
-      roi: 4.6
-    }
-  ]
-
   return (
     <main className="text-orange-50">
       <div className="flex flex-col md:flex-row">
         <SideMenu />
-        <Container>
-          <div className='flex flex-col'>
-            {portifolios.map((item, index) => (
-              <div key={item.id} className={index === 0 ? 'm-2' : 'mx-2 mb-2'}>
-                <PortifolioItem {...item} />
+        {portifolios.length > 0 && (
+          <Container>
+            {loading ? (
+              <div className="bg-white flex align-center justify-center">
+                <Loader
+                  className="h-40 w-40"
+                />
               </div>
-            ))}
-          </div>
-        </Container>
+            ) : (
+              <div className='flex flex-col'>
+                {portifolios.map((item, index) => (
+                  <div key={index} className={index === 0 ? 'm-2' : 'mx-2 mb-2'}>
+                    <PortifolioItem {...item} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </Container>
+        )}
       </div>
+
+      {!!formError &&
+        <div
+          onClick={() => setFormError('')}
+          className="z-50 cursor-pointer fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-red-700 text-orange-50 font-bold text-xs">
+          <div className="w-7">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          {formError.toUpperCase()}
+        </div>
+      }
+      {!!formSuccess &&
+        <div
+          onClick={() => setFormSuccess('')}
+          className="z-50 cursor-pointer fixed flex items-center whitespace-nowrap top-0 right-0 p-2 rounded-bl-md text-center bg-green-600 text-orange-50 font-bold text-xs">
+          <div className="w-7">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          {formSuccess.toUpperCase()}
+        </div>
+      }
     </main>
   )
 }
