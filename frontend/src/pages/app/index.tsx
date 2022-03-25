@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 import Container from '../../components/Container'
@@ -55,25 +56,21 @@ const App = () => {
     <main className="text-orange-50">
       <div className="flex flex-col md:flex-row">
         <SideMenu />
-        {portifolios.length > 0 && (
-          <Container>
-            {loading ? (
-              <div className="bg-white flex align-center justify-center">
-                <Loader
-                  className="h-40 w-40"
-                />
-              </div>
-            ) : (
-              <div className='flex flex-col'>
-                {portifolios.map((item, index) => (
+        <Container>
+          <div className='flex flex-col'>
+            {
+              portifolios.length > 0
+                ? portifolios.map((item, index) => (
                   <div key={index} className={index === 0 ? 'm-2' : 'mx-2 mb-2'}>
                     <PortifolioItem {...item} />
                   </div>
-                ))}
-              </div>
-            )}
-          </Container>
-        )}
+                ))
+                :(<div className='mx-2 mb-2'>
+                  <Image src="/images/empty.jpg" alt="Empty" width="1000" height="950" />
+                </div>)
+            }
+          </div>
+        </Container>
       </div>
 
       {!!formError &&
