@@ -16,6 +16,13 @@ const SideMenu = () =>
           </Link>
         </li>
         <li className="py-2">
+          <Link href="/orders">
+            <a>
+              <span className="underline">Ordens</span>
+            </a>
+          </Link>
+        </li>
+        <li className="py-2">
           <Link href="/">
             <a>
               <span className="">Gráficos</span>
