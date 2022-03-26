@@ -56,7 +56,6 @@ enum Side {
 
 model BinanceOrders {
   id       String   @id @default(uuid())
-  exchange String
   pair     String
   side     Side
   price    Float
