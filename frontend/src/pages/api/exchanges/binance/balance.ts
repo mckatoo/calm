@@ -1,9 +1,8 @@
-import { MainClient } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { PortifolioItemProps } from '../../../../components/PortifolioItem'
+import { balances } from '../../../../lib/binance/balances'
 import { getImage } from '../../../../lib/coinmarketcap'
-import { decrypt } from '../../../../lib/cryptograph'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,21 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!data) return res.status(200).json([])
 
-  const api_key = decrypt(data.apiKey)
-  const api_secret = decrypt(data.secretKey)
-
-  const client = new MainClient({
-    api_key,
-    api_secret
-  })
-
-  await client.syncTime()
-
-  const balances = await client.getBalances()
-  const moreThanZero = balances.filter(assetBal =>
-    assetBal.free !== '0'
-    || assetBal.locked !== '0'
-  );
+  const moreThanZero = await balances(data.apiKey, data.secretKey)
 
   const remmapedBalances: PortifolioItemProps[] = await Promise.all(moreThanZero.map(async assetBal => {
     const free = parseFloat(assetBal.free.toString())
