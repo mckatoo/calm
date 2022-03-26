@@ -2,6 +2,7 @@ import { MainClient } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { PortifolioItemProps } from '../../../../components/PortifolioItem'
+import { getImage } from '../../../../lib/coinmarketcap'
 import { decrypt } from '../../../../lib/cryptograph'
 import { prisma } from '../../../../lib/prisma'
 
@@ -36,16 +37,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     assetBal.free !== '0'
     || assetBal.locked !== '0'
   );
-
-  const getImage = async (symbol: string) => {
-    const coinMarketCapResponse = await fetch(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?symbol=${symbol}`, {
-      method: 'GET',
-      headers: { 'X-CMC_PRO_API_KEY': 'c53786fe-6fc5-4043-806e-fb9ad57546e1' }
-    })
-    const image = String((await coinMarketCapResponse.json()).data[symbol][0].logo)
-
-    return image
-  }
 
   const remmapedBalances: PortifolioItemProps[] = await Promise.all(moreThanZero.map(async assetBal => {
     const free = parseFloat(assetBal.free.toString())
