@@ -16,9 +16,9 @@ const SideMenu = () =>
           </Link>
         </li>
         <li className="py-2">
-          <Link href="/orders">
+          <Link href="/app/orders">
             <a>
-              <span className="underline">Ordens</span>
+              <span>Ordens</span>
             </a>
           </Link>
         </li>
