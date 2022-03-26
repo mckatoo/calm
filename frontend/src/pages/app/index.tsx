@@ -6,6 +6,7 @@ import Container from '../../components/Container'
 import Loader from '../../components/Loader'
 import PortifolioItem, { PortifolioItemProps } from '../../components/PortifolioItem'
 import SideMenu from '../../components/SideMenu'
+import TopMenu from '../../components/TopMenu'
 
 const App = () => {
   const { data: session, status } = useSession()
@@ -13,7 +14,7 @@ const App = () => {
   const [portifolios, setPortifolios] = useState<PortifolioItemProps[]>([])
   const [formError, setFormError] = useState('');
   const [formSuccess, setFormSuccess] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const getBalances = async () => {
@@ -56,21 +57,45 @@ const App = () => {
     <main className="text-orange-50">
       <div className="flex flex-col md:flex-row">
         <SideMenu />
-        <Container>
-          <div className='flex flex-col'>
-            {
-              portifolios.length > 0
-                ? portifolios.map((item, index) => (
-                  <div key={index} className={index === 0 ? 'm-2' : 'mx-2 mb-2'}>
-                    <PortifolioItem {...item} />
-                  </div>
-                ))
-                :(<div className='mx-2 mb-2'>
-                  <Image src="/images/empty.jpg" alt="Empty" width="1000" height="950" />
-                </div>)
-            }
+
+        <div className="grid-row-2 w-full">
+          <div className="text-right">
+            <TopMenu />
           </div>
-        </Container>
+          <Container>
+            {loading
+              ? (
+                <div className="bg-white flex align-center justify-center">
+                  <Loader
+                    className="h-40 w-40"
+                  />
+                </div>
+              )
+              : (
+                <div className='flex flex-col'>
+                  {
+                    portifolios.length > 0
+                      ? (
+                        portifolios.map((item, index) => (
+                          <div key={index} className={index === 0 ? 'm-2' : 'mx-2 mb-2'}>
+                            <PortifolioItem {...item} />
+                          </div>
+                        ))
+                      )
+                      : (
+                        <div className='mx-2 mb-2 text-center'>
+                          <Image src="/images/empty.jpg" alt="Empty" width="1000" height="950" />
+                        </div>
+                      )
+                  }
+                </div>
+              )
+            }
+
+          </Container>
+        </div>
+
+
       </div>
 
       {!!formError &&
