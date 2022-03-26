@@ -11,20 +11,20 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
-  name      String?
-  username  String      @unique
-  email     String      @unique
-  password  String
-  image     String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  exchanges Exchanges[]
-  Orders    Orders[]
-  Balances  Assets[]
+  id            String          @id @default(uuid())
+  name          String?
+  username      String          @unique
+  email         String          @unique
+  password      String
+  image         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  exchanges     Exchanges[]
+  BinanceOrders BinanceOrders[]
+  BinanceAssets BinanceAssets[]
 }
 
-model Assets {
+model BinanceAssets {
   id           String   @id @default(uuid())
   coin         String
   amount       Float
@@ -54,7 +54,7 @@ enum Side {
   SELL
 }
 
-model Orders {
+model BinanceOrders {
   id       String   @id @default(uuid())
   exchange String
   pair     String
@@ -64,4 +64,6 @@ model Orders {
   time     DateTime
   user     User     @relation(fields: [userId], references: [id])
   userId   String
+
+  @@map("Orders")
 }
