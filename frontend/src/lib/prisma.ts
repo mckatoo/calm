@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
-let prisma
+let prisma: PrismaClient<Prisma.PrismaClientOptions, never, Prisma.RejectOnNotFound | Prisma.RejectPerOperation>
 
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient()
@@ -11,4 +11,4 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.prisma
 }
 
-export { prisma }
+export { prisma };
