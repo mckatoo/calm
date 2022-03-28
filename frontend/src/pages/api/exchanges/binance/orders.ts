@@ -19,7 +19,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!data) return res.status(200).json([])
 
+  
+
   const orders = await tradeList(data.apiKey, data.secretKey, 'BTCUSDT')
+  console.log('orders', orders)
 
   return res.status(200).json(orders)
 }
