@@ -4,14 +4,14 @@ export type PortifolioItemProps = {
   id?: string
   name: string
   image?: string
-  quantity: number
+  amount: number
   price: number
   averagePrice: number
   roi: number
 }
 
 const PortifolioItem = ({
-  name, image, quantity, price, averagePrice, roi
+  name, image, amount, price, averagePrice, roi
 }: PortifolioItemProps) => {
   return (
     <div className="flex bg-stone-900 gap-4 p-4 rounded-md">
@@ -35,7 +35,7 @@ const PortifolioItem = ({
       <div className="grid grid-cols-4 w-full items-center gap-4">
         <div className="text-center h-full flex flex-col justify-around">
           <h4 className="bg-slate-700">Quantidade</h4>
-          {quantity}
+          {amount}
         </div>
         <div className="text-center h-full flex flex-col justify-around">
           <h4 className="bg-slate-700">Preço Médio</h4>
