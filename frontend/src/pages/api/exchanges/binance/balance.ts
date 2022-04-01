@@ -15,13 +15,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ]
     }
   })
-
+  
   const data = binanceExchange[0]
 
-  console.log('data', data)
-
   if (!data) return res.status(200).json([])
-
+  
   const binanceAssets = await prisma.binanceAssets.findMany({
     where: { userId }
   })
@@ -29,7 +27,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const moreThanZero = await balances(data.apiKey, data.secretKey)
 
   const remmapedBalances = await remmaperBalances(moreThanZero)
-  console.log('remmapedBalances', remmapedBalances)
 
   if (binanceAssets.length === 0)
     await prisma.binanceAssets.createMany({

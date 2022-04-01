@@ -13,11 +13,11 @@ const remmaperBalances = async (balance: AllCoinsInformationResponse[]) => {
 
       return {
         name: assetBal.coin,
-        image,
         amount,
-        price: 0,
         averagePrice: 0,
+        price: 0,
         roi: 0,
+        image,
       }
     })
   )
