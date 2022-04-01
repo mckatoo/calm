@@ -1,5 +1,4 @@
 import { AllCoinsInformationResponse } from "binance"
-import { PortifolioItemProps } from "../../../components/PortifolioItem"
 import { getImage } from "../../coinmarketcap"
 
 const remmaperBalances = async (balance: AllCoinsInformationResponse[]) => {
@@ -13,11 +12,11 @@ const remmaperBalances = async (balance: AllCoinsInformationResponse[]) => {
 
       return {
         name: assetBal.coin,
-        amount,
-        averagePrice: 0,
-        price: 0,
-        roi: 0,
         image,
+        amount,
+        price: 0,
+        averagePrice: 0,
+        roi: 0,
       }
     })
   )

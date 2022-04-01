@@ -15,11 +15,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ]
     }
   })
-  
+
   const data = binanceExchange[0]
 
   if (!data) return res.status(200).json([])
-  
+
   const binanceAssets = await prisma.binanceAssets.findMany({
     where: { userId }
   })
