@@ -2,7 +2,7 @@ import { AllCoinsInformationResponse } from "binance"
 import { PortifolioItemProps } from "../../../components/PortifolioItem"
 import { getImage } from "../../coinmarketcap"
 
-type BalanceWithoutId = Omit<PortifolioItemProps, 'id'>
+type BalanceWithoutId = Omit<PortifolioItemProps, 'id' | 'price' | 'roi'>
 
 export type RemmaperBalancesType = Required<BalanceWithoutId> & { userId?: string }
 
@@ -20,9 +20,7 @@ const remmaperBalances =
           name: assetBal.coin,
           image,
           amount,
-          price: 0,
           averagePrice: 0,
-          roi: 0,
         }
       })
     )
