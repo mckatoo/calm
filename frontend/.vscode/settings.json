@@ -1,0 +1,6 @@
+{
+  "autoimport.semicolon": false,
+  "autoimport.useSemiColon": false,
+  "typescript.format.semicolons": "remove",
+  "importSorter.importStringConfiguration.numberOfEmptyLinesAfterAllImports": 1,
+}
