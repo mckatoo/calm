@@ -4,6 +4,8 @@ export type RemmaperOrdersType = {
   pair: string
   price: number
   amount: number
+  totalBuyed: number
+  commission: number
   time: number
 }
 
