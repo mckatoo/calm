@@ -29,8 +29,6 @@ model BinanceAssets {
   name         String
   amount       Float
   averagePrice Float
-  price        Float
-  roi          Float
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   userId       String
@@ -55,14 +53,15 @@ enum Side {
 }
 
 model BinanceOrders {
-  id     String   @id @default(uuid())
-  pair   String
-  side   Side
-  price  Float
-  amount Float
-  time   DateTime
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
+  id         String   @id @default(uuid())
+  pair       String
+  price      Float
+  amount     Float
+  totalBuyed Float
+  commission Float
+  time       DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
 
   @@map("Orders")
 }
