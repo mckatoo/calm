@@ -1,27 +1,30 @@
+import { BinanceOrders } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-
-import { BinanceOrders } from '@prisma/client'
-
 import Container from '../../components/Container'
 import Loader from '../../components/Loader'
 import SideMenu from '../../components/SideMenu'
 import TopMenu from '../../components/TopMenu'
 
+
+
 const Orders = () => {
   const { data: session, status } = useSession()
-  const [Error, setError] = useState('');
+  const [Error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [binanceOrders, setBinanceOrders] = useState<BinanceOrders[]>([])
 
   useEffect(() => {
-    const getBalances = async () => {
+    const getOrders = async () => {
       if (!session) return
 
       setLoading(true)
       const responseBinance = await fetch("http://localhost:3000/api/exchanges/binance/orders", {
         method: "POST",
-        body: JSON.stringify({ userId: session.user['userId'] }),
+        body: JSON.stringify({ 
+          userId: session.user['userId'] ,
+          symbol: 'BTCUSDT'
+        }),
         headers: {
           "Content-Type": "application/json"
         }
@@ -31,20 +34,19 @@ const Orders = () => {
         const error = (await responseBinance.json()).error
         !!error && setError(error)
       } else {
-        const balances = await responseBinance.json()
-        setBinanceOrders(balances)
-        setLoading(false)
+        const orders = await responseBinance.json()
+        setBinanceOrders(orders)
       }
     }
-    getBalances()
-    setBinanceOrders([])
-  }, [session]);
+    
+    getOrders()
+    setLoading(false)
 
-  useEffect(() => {
     return () => {
+      setBinanceOrders([])
       setError('')
     }
-  }, [])
+  }, [session])
 
   if (status === "loading")
     return (
@@ -79,8 +81,8 @@ const Orders = () => {
                   {
                     binanceOrders.length > 0 && (
                       binanceOrders.map((order, index) => (
-                        <div key={index} className={index === 0 ? 'm-2' : 'mx-2 mb-2'}>
-                          {order.pair} - {order.amount}
+                        <div key={index} className={`text-black ${index === 0 ? 'm-2' : 'mx-2 mb-2'}`}>
+                          Pair: {order.pair} | Amount: {order.amount}
                         </div>
                       ))
                     )

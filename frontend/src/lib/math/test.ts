@@ -1,4 +1,4 @@
-import { substract, sum } from ".";
+import { subtract, sum } from ".";
 
 describe('Math library', () => {
 
@@ -30,31 +30,35 @@ describe('Math library', () => {
     expect(sumRandomValues).toBe(1836);
   });
 
-  it('should substract array values', () => {
+  it('should subtract array values', () => {
     const values = [1, 2, 3, 4, 5];
-    const substractValues = substract(values);
+    const subtractValues = subtract(values);
 
-    expect(substractValues).toBe(-13);
+    expect(subtractValues).toBe(-13);
   })
 
-  it('should substract array negative values', () => {
+  it('should subtract array negative values', () => {
     const values = [-1, -2, -3, -4, -5];
-    const substractValues = substract(values);
+    const subtractValues = subtract(values);
 
-    expect(substractValues).toBe(13);
+    expect(subtractValues).toBe(13);
   });
 
-  it('should substract array positive and negative values', () => {
+  it('should subtract array positive and negative values', () => {
     const values = [-1, 2, -3, 4, -5];
-    const substractValues = substract(values);
-    expect(substractValues).toBe(1);
+    const subtractValues = subtract(values);
+    expect(subtractValues).toBe(1);
 
     const invertedValues = [1, -2, 3, -4, 5];
-    const substractInvertedValues = substract(invertedValues);
-    expect(substractInvertedValues).toBe(-1);
+    const subtractInvertedValues = subtract(invertedValues);
+    expect(subtractInvertedValues).toBe(-1);
 
     const randomValues = [34, -543, -4, 2354, -5];
-    const substractRandomValues = substract(randomValues);
-    expect(substractRandomValues).toBe(-1768);
+    const subtractRandomValues = subtract(randomValues);
+    expect(subtractRandomValues).toBe(-1768);
+  });
+
+  it('should return average price', () => {
+    
   });
 });

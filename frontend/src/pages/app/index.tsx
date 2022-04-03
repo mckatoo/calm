@@ -1,19 +1,19 @@
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-
 import Container from '../../components/Container'
 import Loader from '../../components/Loader'
 import PortifolioItem, { PortifolioItemProps } from '../../components/PortifolioItem'
 import SideMenu from '../../components/SideMenu'
 import TopMenu from '../../components/TopMenu'
 
+
 const App = () => {
   const { data: session, status } = useSession()
 
   const [portifolios, setPortifolios] = useState<PortifolioItemProps[]>([])
-  const [formError, setFormError] = useState('');
-  const [formSuccess, setFormSuccess] = useState('');
+  const [formError, setFormError] = useState('')
+  const [formSuccess, setFormSuccess] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -21,13 +21,15 @@ const App = () => {
       if (!session) return
 
       setLoading(true)
-      const response = await fetch("http://localhost:3000/api/exchanges/binance/balance", {
-        method: "POST",
-        body: JSON.stringify({ userId: session.user['userId'] }),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
+      const response = await fetch(
+        "http://localhost:3000/api/exchanges/binance/balance",
+        {
+          method: "POST",
+          body: JSON.stringify({ userId: session.user['userId'] }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
 
       if (!response.ok) {
         const error = (await response.json()).error
@@ -38,9 +40,14 @@ const App = () => {
         setLoading(false)
       }
     }
+
     getBalances()
-    setPortifolios([])
-  }, [session]);
+
+    return () => {
+      setLoading(false)
+      setPortifolios([])
+    }
+  }, [session])
 
   if (status === "loading")
     return (

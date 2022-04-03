@@ -25,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   const moreThanZero = await balances(data.apiKey, data.secretKey)
+  console.log('moreThanZero', JSON.stringify(moreThanZero, null, 2))
 
   const remmapedBalances = await remmaperBalances(moreThanZero)
 
