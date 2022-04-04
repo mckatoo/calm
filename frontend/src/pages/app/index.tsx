@@ -7,7 +7,6 @@ import PortifolioItem, { PortifolioItemProps } from '../../components/Portifolio
 import SideMenu from '../../components/SideMenu'
 import TopMenu from '../../components/TopMenu'
 
-
 const App = () => {
   const { data: session, status } = useSession()
 

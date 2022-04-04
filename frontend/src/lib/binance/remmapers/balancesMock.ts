@@ -4,12 +4,14 @@ export const mockOutputBalances = [
     image: undefined,
     amount: 0.03459873 + 0,
     averagePrice: 0,
+    price: NaN
   },
   {
     name: 'BRL',
     image: '/images/brazilian-real.svg',
     amount: 0.03628627 + 0,
     averagePrice: 0,
+    price: NaN
   }
 ]
 
