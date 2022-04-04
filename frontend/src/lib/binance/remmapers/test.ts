@@ -5,6 +5,7 @@ import { remmapersOrders } from "./orders"
 import { mockInputOrders, mockOutputOrders } from "./ordersMock"
 
 jest.mock('../../coinmarketcap')
+jest.mock("../prices")
 
 describe('Remmapers', () => {
   it('Should input original balance and output an Promisse of RemmaperBalancesType', async () => {

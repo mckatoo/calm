@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { formatPrice } from "../../lib/formatPrice"
 
 export type PortifolioItemProps = {
   id?: string
@@ -39,11 +40,12 @@ const PortifolioItem = ({
         </div>
         <div className="text-center h-full flex flex-col justify-around">
           <h4 className="bg-slate-700">Preço Médio</h4>
-          {`$${averagePrice}`}
+          {/* {`$${averagePrice}`} */}
+          {`${formatPrice(averagePrice)}`}
         </div>
         <div className="text-center h-full flex flex-col justify-around">
           <h4 className="bg-slate-700">Preço Atual</h4>
-          {`$${price}`}
+          {`${formatPrice(price)}`}
         </div>
         <div className="text-center h-full flex flex-col justify-around">
           <h4 className="bg-slate-700">Roi</h4>
