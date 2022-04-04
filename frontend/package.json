@@ -19,6 +19,7 @@
     "@prisma/client": "3.10.0",
     "bcrypt": "5.0.1",
     "binance": "2.0.27",
+    "image-downloader": "4.1.0",
     "jsonwebtoken": "8.5.1",
     "next": "12.1.0",
     "next-auth": "4.2.1",

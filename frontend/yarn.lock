@@ -2420,6 +2420,11 @@ ignore@^5.2.0:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
 
+image-downloader@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/image-downloader/-/image-downloader-4.1.0.tgz#ce54bc675e243b24c43ca951a326416d4b7bf675"
+  integrity sha512-S6snaVMg4g08sksTb0ZUQsgQmKo0sv20jJoVtOnSbO/tVC4xcG9DydjLF5ONTKIz3e3qUPnIrMJhU9G124uIfQ==
+
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.3.0.tgz#37162c25fcb9ebaa2e6e53d5b4d88ce17d9e0c2b"
