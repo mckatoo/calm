@@ -1,10 +1,12 @@
 import { MainClient } from 'binance'
-
 import { decrypt } from '../cryptograph'
+import { keys } from './keys'
 
-const balances = async (encryptedApiKey: string, encryptedSecretKey: string) => {
-  const api_key = decrypt(encryptedApiKey)
-  const api_secret = decrypt(encryptedSecretKey)
+const balances = async (userId: string) => {
+  const { apiKey, secretKey } = await keys(userId)
+
+  const api_key = decrypt(apiKey)
+  const api_secret = decrypt(secretKey)
 
   const client = new MainClient({
     api_key,

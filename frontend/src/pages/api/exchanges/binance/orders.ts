@@ -1,27 +1,30 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { tradeList } from '../../../../lib/binance/orders'
+import { remmapersOrders } from '../../../../lib/binance/remmapers/orders'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, symbol } = req.body
 
-  const binanceExchange = await prisma.exchanges.findMany({
-    where: {
-      AND: [
-        { name: 'binance' },
-        { userId }
-      ]
-    }
+  const ordersInBinance = await tradeList({userId, symbol})
+  const remmapedOrders = await remmapersOrders(ordersInBinance)
+
+  const ordersInDb = await prisma.binanceOrders.findMany({
+    where: { userId }
   })
 
-  const data = binanceExchange[0]
+  if (ordersInDb.length === 0) {
+    await prisma.binanceOrders.createMany({
+      data: remmapedOrders.map(order => ({
+        userId,
+        ...order,
+        time: new Date(order.time)
+      }))
+    })
+  }
 
-  if (!data) return res.status(200).json([])
-
-  const orders = await tradeList(data.apiKey, data.secretKey, symbol)
-
-  return res.status(200).json(orders)
+  return res.status(200).json(remmapedOrders)
 }
 
 export default handler

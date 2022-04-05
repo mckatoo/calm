@@ -1,10 +1,18 @@
 import { MainClient } from 'binance'
-
 import { decrypt } from '../cryptograph'
+import { keys } from './keys'
 
-const tradeList = async (encryptedApiKey: string, encryptedSecretKey: string, symbol: string) => {
-  const api_key = decrypt(encryptedApiKey)
-  const api_secret = decrypt(encryptedSecretKey)
+type TradeListType = {
+  userId: string
+  symbol: string
+}
+
+const tradeList = async ({ userId, symbol }: TradeListType) => {
+
+  const { apiKey, secretKey } = await keys(userId)
+
+  const api_key = decrypt(apiKey)
+  const api_secret = decrypt(secretKey)
 
   const client = new MainClient({
     api_key,
