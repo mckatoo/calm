@@ -6,8 +6,6 @@ import Loader from '../../components/Loader'
 import SideMenu from '../../components/SideMenu'
 import TopMenu from '../../components/TopMenu'
 
-
-
 const Orders = () => {
   const { data: session, status } = useSession()
   const [Error, setError] = useState('')
