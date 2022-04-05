@@ -1,12 +1,13 @@
 import { RawAccountTrade } from 'binance'
 
 export type RemmaperOrdersType = {
+  originalId: string
   pair: string
   price: number
   amount: number
   totalBuyed: number
   commission: number
-  time: number
+  time: Date
 }
 
 const remmapersOrders =
@@ -15,6 +16,7 @@ const remmapersOrders =
 
       orders.map(async order => {
         const {
+          id,
           symbol: pair,
           qty,
           time,
@@ -25,12 +27,13 @@ const remmapersOrders =
         } = order
 
         return {
+          originalId: `${id}`,
           pair,
           price: parseFloat(price.toString()),
           amount: parseFloat(qty.toString()),
           totalBuyed: parseFloat(quoteQty.toString()),
           commission: parseFloat(commission.toString()),
-          time,
+          time: new Date(time),
         }
       })
     )

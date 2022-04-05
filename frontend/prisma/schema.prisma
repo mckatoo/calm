@@ -54,6 +54,7 @@ enum Side {
 
 model BinanceOrders {
   id         String   @id @default(uuid())
+  originalId String   @unique
   pair       String
   price      Float
   amount     Float

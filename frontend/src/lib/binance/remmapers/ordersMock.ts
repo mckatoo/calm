@@ -1,19 +1,21 @@
 export const mockOutputOrders = [
   {
+    originalId: '28457',
     pair: "BNBBTC",
     price: 4.00000100,
     amount: 12.00000000,
     totalBuyed: 48.000012,
     commission: 10.10000000,
-    time: 1499865549590,
+    time: new Date(1499865549590),
   },
   {
+    originalId: '26796',
     pair: "XYZJKL",
     price: 44.34534559,
     amount: 24.00000000,
     totalBuyed: 1064.28829416,
     commission: 34.40056000,
-    time: 1499866649590,
+    time: new Date(1499866649590),
   }
 ]
 
