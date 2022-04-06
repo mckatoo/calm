@@ -1,16 +1,18 @@
-import { BinanceOrders } from '@prisma/client'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Container from '../../components/Container'
 import Loader from '../../components/Loader'
 import SideMenu from '../../components/SideMenu'
 import TopMenu from '../../components/TopMenu'
+import { RemmaperOrdersType } from '../../lib/binance/remmapers/orders'
+import { formatPrice, formatTime } from '../../lib/format'
 
 const Orders = () => {
   const { data: session, status } = useSession()
   const [Error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [binanceOrders, setBinanceOrders] = useState<BinanceOrders[]>([])
+  const [binanceOrders, setBinanceOrders] = useState<RemmaperOrdersType[]>([])
 
   useEffect(() => {
     const getOrders = async () => {
@@ -19,8 +21,8 @@ const Orders = () => {
       setLoading(true)
       const responseBinance = await fetch("http://localhost:3000/api/exchanges/binance/orders", {
         method: "POST",
-        body: JSON.stringify({ 
-          userId: session.user['userId'] ,
+        body: JSON.stringify({
+          userId: session.user['userId'],
           symbol: 'BTCUSDT'
         }),
         headers: {
@@ -36,7 +38,7 @@ const Orders = () => {
         setBinanceOrders(orders)
       }
     }
-    
+
     getOrders()
     setLoading(false)
 
@@ -75,16 +77,54 @@ const Orders = () => {
                 </div>
               )
               : (
-                <div className='flex flex-col'>
-                  {
-                    binanceOrders.length > 0 && (
-                      binanceOrders.map((order, index) => (
-                        <div key={index} className={`text-black ${index === 0 ? 'm-2' : 'mx-2 mb-2'}`}>
-                          Pair: {order.pair} | Amount: {order.amount}
-                        </div>
-                      ))
-                    )
-                  }
+                <div className="flex flex-col">
+                  <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full mx-4">
+                          <thead className="border-b text-sm font-medium bg-slate-700 px-6 py-4 text-left">
+                            <tr>
+                              <th scope="col">
+                                Data
+                              </th>
+                              <th scope="col">
+                                Paridade
+                              </th>
+                              <th scope="col">
+                                Preço
+                              </th>
+                              <th scope="col">
+                                Total Comprado
+                              </th>
+                              <th scope="col">
+                                Taxa
+                              </th>
+                              <th scope="col">
+                                Valor Total
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className='text-slate-900 px-6 py-4 whitespace-nowrap text-sm font-medium border-b'>
+                            {
+                              binanceOrders.map((order, index) => (
+                                <tr key={index} className='h-8'>
+                                  <td>{formatTime({ time: order.time })}</td>
+                                  <td className='align-middle'>
+                                    <Image src={order.icon} alt={order.pair} width={12} height={12} />
+                                    {order.pair}
+                                  </td>
+                                  <td>{formatPrice(order.price)}</td>
+                                  <td>{order.amount}</td>
+                                  <td>{order.commission}</td>
+                                  <td>{order.totalBuyed}</td>
+                                </tr>
+                              ))
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )
             }

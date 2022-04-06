@@ -7,6 +7,7 @@ export const mockOutputOrders = [
     totalBuyed: 48.000012,
     commission: 10.10000000,
     time: new Date(1499865549590),
+    icon: undefined
   },
   {
     originalId: '26796',
@@ -16,6 +17,7 @@ export const mockOutputOrders = [
     totalBuyed: 1064.28829416,
     commission: 34.40056000,
     time: new Date(1499866649590),
+    icon: undefined
   }
 ]
 

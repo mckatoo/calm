@@ -1,4 +1,5 @@
 import { RawAccountTrade } from 'binance'
+import { getImage } from '../../coinmarketcap'
 
 export type RemmaperOrdersType = {
   originalId: string
@@ -8,6 +9,7 @@ export type RemmaperOrdersType = {
   totalBuyed: number
   commission: number
   time: Date
+  icon: string
 }
 
 const remmapersOrders =
@@ -34,6 +36,11 @@ const remmapersOrders =
           totalBuyed: parseFloat(quoteQty.toString()),
           commission: parseFloat(commission.toString()),
           time: new Date(time),
+          icon: await getImage(
+            pair.startsWith(commissionAsset)
+              ? commissionAsset
+              : pair.substring(0, 3) || pair.substring(0, 4)
+          )
         }
       })
     )

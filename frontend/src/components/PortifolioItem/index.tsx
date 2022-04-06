@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { formatPrice } from "../../lib/formatPrice"
+import { formatPrice } from "../../lib/format"
 
 export type PortifolioItemProps = {
   id?: string
