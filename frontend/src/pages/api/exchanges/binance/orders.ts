@@ -27,7 +27,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await prisma.binanceOrders.createMany({
     data: orders.map(order => ({
       userId,
-      ...order
+      originalId: order.originalId,
+      pair: order.pair,
+      price: order.price,
+      amount: order.amount,
+      totalBuyed: order.totalBuyed,
+      commission: order.commission,
+      time: order.time
     }))
   })
 
