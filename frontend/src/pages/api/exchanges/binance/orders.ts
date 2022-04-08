@@ -1,14 +1,53 @@
+import { RawAccountTrade } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { tradeList } from '../../../../lib/binance/orders'
 import { RemmaperOrdersType, remmapersOrders } from '../../../../lib/binance/remmapers/orders'
+import { tradeFee } from '../../../../lib/binance/tradeFee'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, symbol } = req.body
 
-  const ordersInBinance = await tradeList({ userId, symbol })
+  let ordersInBinance: RawAccountTrade[]
+
+  if (!!symbol) {
+    ordersInBinance = await tradeList({ userId, symbol })
+  } else {
+    const mySymbols = (await prisma.binanceAssets.findMany({ where: { userId } })).map(asset => asset.name)
+    const feePairs = (await tradeFee({ userId })).map(fee => fee.symbol)
+
+    let startPairs: string[] = []
+
+    mySymbols.forEach(symbol => {
+      startPairs = [
+        ...startPairs,
+        ...feePairs.filter(feePair => feePair.startsWith(symbol))
+      ]
+    })
+
+    let myPairs: string[] = []
+
+    mySymbols.forEach(symbol => {
+      myPairs = [
+        ...myPairs,
+        ...startPairs.filter(pair => pair.endsWith(symbol))
+      ]
+    })
+
+    myPairs.map(pair => {
+      setTimeout(async () => {
+        const trade = await tradeList({ userId, symbol: pair })
+        ordersInBinance = [
+          ...ordersInBinance,
+          ...trade
+        ]
+      }, 1000)
+    })
+  }
+
   const remmapedOrders = await remmapersOrders(ordersInBinance)
+  console.log('Remmaped orders: ', remmapedOrders)
 
   const ordersInDb = await prisma.binanceOrders.findMany({
     where: { userId }
