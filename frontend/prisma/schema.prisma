@@ -27,8 +27,8 @@ model User {
 model BinanceAssets {
   id           String   @id @default(uuid())
   name         String
-  amount       Float
-  averagePrice Float
+  amount       Decimal  @db.Decimal(16, 8)
+  averagePrice Decimal  @db.Decimal(16, 8)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   userId       String
@@ -56,10 +56,10 @@ model BinanceOrders {
   id         String   @id @default(uuid())
   originalId String   @unique
   pair       String
-  price      Float
-  amount     Float
-  totalBuyed Float
-  commission Float
+  price      Decimal  @db.Decimal(16, 8)
+  amount     Decimal  @db.Decimal(16, 8)
+  totalBuyed Decimal  @db.Decimal(16, 8)
+  commission Decimal  @db.Decimal(16, 8)
   time       DateTime
   user       User     @relation(fields: [userId], references: [id])
   userId     String
