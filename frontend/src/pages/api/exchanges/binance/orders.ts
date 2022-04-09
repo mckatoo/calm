@@ -9,7 +9,9 @@ import { prisma } from '../../../../lib/prisma'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, symbol } = req.body
 
-  let ordersInBinance: RawAccountTrade[]
+  const timeout = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  let ordersInBinance: RawAccountTrade[] = []
 
   if (!!symbol) {
     ordersInBinance = await tradeList({ userId, symbol })
@@ -35,33 +37,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ]
     })
 
-    myPairs.map(pair => {
-      setTimeout(async () => {
-        const trade = await tradeList({ userId, symbol: pair })
-        ordersInBinance = [
-          ...ordersInBinance,
-          ...trade
-        ]
-      }, 1000)
-    })
+    for (const pair of myPairs) {
+      const trade = await tradeList({ userId, symbol: pair })
+      ordersInBinance = [
+        ...ordersInBinance,
+        ...trade
+      ]
+      await timeout(1000)
+    }
   }
-
   const remmapedOrders = await remmapersOrders(ordersInBinance)
-  console.log('Remmaped orders: ', remmapedOrders)
 
   const ordersInDb = await prisma.binanceOrders.findMany({
     where: { userId }
   })
 
-  let orders: RemmaperOrdersType[] = []
-
-  if (ordersInDb.length === 0) {
-    orders = remmapedOrders
-  } else {
-    orders = remmapedOrders.filter(order =>
-      !ordersInDb.some(db => db.originalId === order.originalId)
-    )
-  }
+  const orders = remmapedOrders.filter(order =>
+    !ordersInDb.some(db => db.originalId === order.originalId)
+  )
 
   await prisma.binanceOrders.createMany({
     data: orders.map(order => ({

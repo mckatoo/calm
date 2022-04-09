@@ -1,6 +1,5 @@
 import fs from 'fs'
 import { image as downloadImage } from 'image-downloader'
-import { resolve } from 'path'
 
 async function download(url: string, symbol: string) {
   console.log(`Downloading the image ${symbol}...`)
@@ -20,7 +19,11 @@ async function download(url: string, symbol: string) {
 }
 
 const getImage = async (symbol: string) => {
-  const image = `/images/symbols/${symbol}.png`
+  const image = !!(symbol === 'BRL')
+    ? '/images/brazilian-real.svg'
+    : !!(symbol === 'USD')
+      ? '/images/dollar.svg'
+      : `/images/symbols/${symbol}.png`
   const fileExist = fs.existsSync(`public/${image}`)
 
   if (!fileExist) await download(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?symbol=${symbol}`, symbol)

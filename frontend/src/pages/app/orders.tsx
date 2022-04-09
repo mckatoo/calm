@@ -23,7 +23,6 @@ const Orders = () => {
         method: "POST",
         body: JSON.stringify({
           userId: session.user['userId'],
-          symbol: 'BTCUSDT'
         }),
         headers: {
           "Content-Type": "application/json"
@@ -39,8 +38,7 @@ const Orders = () => {
       }
     }
 
-    getOrders()
-    setLoading(false)
+    getOrders().finally(() => setLoading(false))
 
     return () => {
       setBinanceOrders([])

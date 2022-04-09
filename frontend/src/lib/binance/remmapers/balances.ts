@@ -18,9 +18,7 @@ const remmaperBalances =
         const locked = parseFloat(assetBal.locked.toString())
         const amount = fixedParseFloat((free + locked).toString())
 
-        const image = !!(assetBal.coin === 'BRL')
-          ? '/images/brazilian-real.svg'
-          : await getImage(assetBal.coin)
+        const image = await getImage(assetBal.coin)
 
         const price = !!(assetBal.coin === 'USDT')
           ? 1
