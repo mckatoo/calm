@@ -2,7 +2,7 @@ import Link from "next/link"
 import Logo from "../Logo"
 
 const SideMenu = () =>
-  <div className="p-4 text-left">
+  <menu aria-label="Side Menu" className="hidden md:block p-4 text-left">
     <div className="flex justify-center">
       <Logo size="normal" />
     </div>
@@ -31,6 +31,6 @@ const SideMenu = () =>
         </li>
       </ul>
     </div>
-  </div>
+  </menu>
 
 export default SideMenu
