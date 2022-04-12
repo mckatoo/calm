@@ -8,6 +8,7 @@ export type RemmaperOrdersType = {
   amount: number
   totalBuyed: number
   commission: number
+  commissionAsset: string
   time: Date
   icon: string
 }
@@ -35,6 +36,7 @@ const remmapersOrders =
           amount: parseFloat(qty.toString()),
           totalBuyed: parseFloat(quoteQty.toString()),
           commission: parseFloat(commission.toString()),
+          commissionAsset,
           time: new Date(time),
           icon: await getImage(
             pair.startsWith(commissionAsset)

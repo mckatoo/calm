@@ -1,73 +1,58 @@
 import { RawAccountTrade } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { tradeList } from '../../../../lib/binance/orders'
 import { RemmaperOrdersType, remmapersOrders } from '../../../../lib/binance/remmapers/orders'
-import { tradeFee } from '../../../../lib/binance/tradeFee'
+import { getImage } from '../../../../lib/coinmarketcap'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, symbol } = req.body
 
-  const timeout = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+  let ordersInDb: RawAccountTrade[] = []
 
-  let ordersInBinance: RawAccountTrade[] = []
-
-  if (!!symbol) {
-    ordersInBinance = await tradeList({ userId, symbol })
+  if (!symbol) {
+    ordersInDb = (await prisma.binanceOrders.findMany({
+      where: { userId }
+    })).map((order) => {
+      return {
+        id: parseInt(order.id),
+        symbol: order.pair,
+        orderId: parseInt(order.originalId),
+        orderListId: 0,
+        qty: parseFloat(order.amount.toFixed(8)),
+        quoteQty: parseFloat(order.amount.toFixed(8)),
+        price: parseFloat(order.price.toFixed(8)),
+        commission: parseFloat(order.commission.toFixed(8)),
+        commissionAsset: order.commissionAsset,
+        time: order.time.getTime(),
+        isBuyer: false,
+        isMaker: false,
+        isBestMatch: false
+      }
+    })
   } else {
-    const mySymbols = (await prisma.binanceAssets.findMany({ where: { userId } })).map(asset => asset.name)
-    const feePairs = (await tradeFee({ userId })).map(fee => fee.symbol)
-
-    let startPairs: string[] = []
-
-    mySymbols.forEach(symbol => {
-      startPairs = [
-        ...startPairs,
-        ...feePairs.filter(feePair => feePair.startsWith(symbol))
-      ]
+    ordersInDb = (await prisma.binanceOrders.findMany({
+      where: { userId, pair: symbol }
+    })).map((order) => {
+      return {
+        id: parseInt(order.id),
+        symbol: order.pair,
+        orderId: parseInt(order.originalId),
+        orderListId: 0,
+        qty: parseFloat(order.amount.toFixed(8)),
+        quoteQty: parseFloat(order.amount.toFixed(8)),
+        price: parseFloat(order.price.toFixed(8)),
+        commission: parseFloat(order.commission.toFixed(8)),
+        commissionAsset: order.commissionAsset,
+        time: order.time.getTime(),
+        isBuyer: false,
+        isMaker: false,
+        isBestMatch: false
+      }
     })
-
-    let myPairs: string[] = []
-
-    mySymbols.forEach(symbol => {
-      myPairs = [
-        ...myPairs,
-        ...startPairs.filter(pair => pair.endsWith(symbol))
-      ]
-    })
-
-    for (const pair of myPairs) {
-      const trade = await tradeList({ userId, symbol: pair })
-      ordersInBinance = [
-        ...ordersInBinance,
-        ...trade
-      ]
-      await timeout(1000)
-    }
   }
-  const remmapedOrders = await remmapersOrders(ordersInBinance)
 
-  const ordersInDb = await prisma.binanceOrders.findMany({
-    where: { userId }
-  })
-
-  const orders = remmapedOrders.filter(order =>
-    !ordersInDb.some(db => db.originalId === order.originalId)
-  )
-
-  await prisma.binanceOrders.createMany({
-    data: orders.map(order => ({
-      userId,
-      originalId: order.originalId,
-      pair: order.pair,
-      price: order.price,
-      amount: order.amount,
-      totalBuyed: order.totalBuyed,
-      commission: order.commission,
-      time: order.time
-    }))
-  })
+  const remmapedOrders = await remmapersOrders(ordersInDb)
 
   return res.status(200).json(remmapedOrders)
 }
