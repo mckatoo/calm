@@ -108,7 +108,7 @@ const Orders = () => {
                                 <tr key={index} className='h-8'>
                                   <td>{formatTime({ time: order.time })}</td>
                                   <td className='align-middle'>
-                                    <Image src={order.icon} alt={order.pair} width={12} height={12} />
+                                    <Image src={order.icon || '/images/not-found.webp'} alt={order.pair} width={12} height={12} />
                                     {order.pair}
                                   </td>
                                   <td>{formatPrice(order.price)}</td>

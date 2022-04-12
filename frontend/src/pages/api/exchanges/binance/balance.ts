@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { PortifolioItemProps } from '../../../../components/PortifolioItem'
 import { balances } from '../../../../lib/binance/balances'
 import { remmaperBalances, RemmaperBalancesType } from '../../../../lib/binance/remmapers/balances'
+import { getImage } from '../../../../lib/coinmarketcap'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -10,28 +12,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     where: { userId }
   })
 
-  const moreThanZero = await balances(userId)
-
-  const remmapedBalances = await remmaperBalances(moreThanZero)
-
-  let myBalances: RemmaperBalancesType[] = []
-
-  if (binanceAssets.length === 0) {
-    myBalances = remmapedBalances
-  } else {
-    myBalances = remmapedBalances.filter(balance =>
-      !binanceAssets.some(asset => asset.name === balance.name)
-    )
-  }
-
-  await prisma.binanceAssets.createMany({
-    data: myBalances.map(asset => ({
-      userId,
-      name: asset.name,
-      amount: asset.amount,
-      averagePrice: asset.averagePrice
-    }))
-  })
+  const remmapedBalances = await remmaperBalances(binanceAssets.map(asset => ({
+    coin: asset.name,
+    free: asset.amount.toNumber(),
+    locked: 0
+  })))
 
   return res.status(200).json(remmapedBalances)
 }

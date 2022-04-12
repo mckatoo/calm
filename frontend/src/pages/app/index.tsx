@@ -45,6 +45,8 @@ const App = () => {
     return () => {
       setLoading(false)
       setPortifolios([])
+      setFormSuccess('')
+      setFormError('')
     }
   }, [session])
 

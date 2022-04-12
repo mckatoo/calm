@@ -35,19 +35,19 @@ const PortifolioItem = ({
       </div>
       <div className="grid grid-cols-4 w-full items-center sd:gap-4">
         <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex items-center justify-center rounded-tl-md">Quantidade</h4>
-          {amount}
+          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center rounded-tl-md">Quantidade</h4>
+          {amount.toFixed(8)}
         </div>
         <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex items-center justify-center">Preço Médio</h4>
+          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center">Preço Médio</h4>
           {`${formatPrice(averagePrice)}`}
         </div>
         <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex items-center justify-center">Preço Atual</h4>
+          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center">Preço Atual</h4>
           {`${formatPrice(price)}`}
         </div>
         <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex items-center justify-center rounded-tr-md">Roi</h4>
+          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center rounded-tr-md">Roi</h4>
           {`${roi}%`}
         </div>
       </div>

@@ -15,7 +15,7 @@ export const formatTime = ({
   time,
   locale = 'pt-BR',
   options = {
-    day: 'numeric',
+    day: '2-digit',
     month: '2-digit',
     year: 'numeric'
   }
