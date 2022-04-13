@@ -1,8 +1,10 @@
-import { subtract } from "./subtract"
-import { sum } from "./sum"
+import { averagePrice } from './averagePrice'
+import { subtract } from './subtract'
+import { sum } from './sum'
 
 export {
   sum,
-  subtract
+  subtract,
+  averagePrice
 }
 
