@@ -1,5 +1,6 @@
 import { RawAccountTrade } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
+import calcAveragePrice from '../../../../lib/binance/averagePrice'
 import { balances } from '../../../../lib/binance/balances'
 import { tradeList } from '../../../../lib/binance/orders'
 import { remmaperBalances, RemmaperBalancesType } from '../../../../lib/binance/remmapers/balances'
@@ -17,7 +18,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     where: { userId }
   })
 
-  const moreThanZero = await balances(userId)
+  const moreThanZero = (await balances(userId)).map(asset => ({
+    ...asset,
+    averagePrice: calcAveragePrice({
+      balance: parseFloat(asset.free.toString()),
+      orders: [] ///////////////////////////////// falta implementar
+    })
+  }))
 
   const remmapedBalances = await remmaperBalances(moreThanZero)
 

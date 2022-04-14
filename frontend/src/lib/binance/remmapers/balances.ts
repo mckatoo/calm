@@ -1,4 +1,4 @@
-import { AllCoinsInformationResponse } from "binance"
+import { AllCoinsInformationResponse, numberInString } from "binance"
 import { PortifolioItemProps } from "../../../components/PortifolioItem"
 import { getImage } from "../../coinmarketcap"
 import { prices } from "../prices"
@@ -7,7 +7,10 @@ type BalanceWithoutId = Omit<PortifolioItemProps, 'id' | 'roi'>
 
 export type RemmaperBalancesType = Required<BalanceWithoutId> & { userId?: string }
 
-type RemmaperBalancesInput = Pick<AllCoinsInformationResponse, 'coin' | 'free' | 'locked'>
+type RemmaperBalancesInput = Pick<AllCoinsInformationResponse, 'coin' | 'free'> & {
+  locked?: numberInString
+  averagePrice: number
+}
 
 const remmaperBalances =
   async (balance: RemmaperBalancesInput[]): Promise<RemmaperBalancesType[]> => {
@@ -16,7 +19,7 @@ const remmaperBalances =
     return await Promise.all(
       balance.map(async assetBal => {
         const free = parseFloat(assetBal.free.toString())
-        const locked = parseFloat(assetBal.locked.toString())
+        const locked = parseFloat(assetBal.locked?.toString()) || 0
         const amount = parseFloat((free + locked).toString())
 
         const image = await getImage(assetBal.coin)
@@ -31,14 +34,15 @@ const remmaperBalances =
                   || p.symbol === `${assetBal.coin}USDT`
               )
             )?.price?.toString()
-          )
+          ) || 0
 
         return {
           name: assetBal.coin,
           image,
           amount,
           price,
-          averagePrice: 0,
+          averagePrice: assetBal.averagePrice,
+          roi: 0
         }
       })
     )
