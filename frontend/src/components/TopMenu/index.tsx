@@ -164,12 +164,14 @@ const TopMenu = () => {
           </button>
           <div
             className={`
-            absolute 
-            p-4 
+            absolute
+            z-50
             bg-slate-900
             overflow-hidden
-            inset-0
-            ${!isOpenUserMenu && `hidden`}
+            right-0
+            mr-2
+            rounded-md
+            ${!isOpenUserMenu ? 'hidden' : ''}
           `}>
             <Link href={'/app/profile'}>
               <a className='hover:bg-gray-800 rounded-md block px-16 py-2'>Perfil</a>
