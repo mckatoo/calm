@@ -102,8 +102,6 @@ const App = () => {
 
           </Container>
         </div>
-
-
       </div>
 
       {!!formError &&
