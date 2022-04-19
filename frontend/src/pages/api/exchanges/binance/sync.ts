@@ -20,10 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const moreThanZero = (await balances(userId)).map(asset => ({
     ...asset,
-    averagePrice: calcAveragePrice({
-      balance: parseFloat(asset.free.toString()),
-      orders: [] ///////////////////////////////// falta implementar
-    })
+    averagePrice: 0
   }))
 
   const remmapedBalances = await remmaperBalances(moreThanZero)
@@ -40,20 +37,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
   }
 
-  await prisma.binanceAssets.createMany({
-    data: myBalances.map(asset => ({
-      userId,
-      name: asset.name,
-      amount: asset.amount,
-      averagePrice: asset.averagePrice
-    }))
-  })
+  // await prisma.binanceAssets.createMany({
+  //   data: myBalances.map(asset => ({
+  //     userId,
+  //     name: asset.name,
+  //     amount: asset.amount,
+  //     averagePrice: asset.averagePrice
+  //   }))
+  // })
 
   // sync orders
 
   let ordersInBinance: RawAccountTrade[] = []
 
-  const mySymbols = (await prisma.binanceAssets.findMany({ where: { userId } })).map(asset => asset.name)
+  // const mySymbols = (await prisma.binanceAssets.findMany({ where: { userId } })).map(asset => asset.name)
+  const mySymbols = myBalances.map(asset => asset.name)
   const feePairs = (await tradeFee({ userId })).map(fee => fee.symbol)
 
   let startPairs: string[] = []
@@ -89,22 +87,52 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     where: { userId }
   })
 
-  const orders = remmapedOrders.filter(order =>
+  const myOrders = remmapedOrders.filter(order =>
     !ordersInDb.some(db => db.originalId === order.originalId)
   )
 
-  await prisma.binanceOrders.createMany({
-    data: orders.map(order => ({
+  const binanceAssetsData = myBalances.map(asset => {
+    const orders = myOrders
+      .filter(order => order.pair.startsWith(asset.name))
+      .map(order => ({
+        price: order.price,
+        commission: order.commission,
+        qtd: order.amount
+      }))
+
+    const averagePrice = (asset.name.includes('USD') || asset.name.includes('BRL'))
+      ? 0
+      : calcAveragePrice({
+        balance: asset.amount,
+        orders
+      })
+
+    return {
       userId,
-      originalId: order.originalId,
-      pair: order.pair,
-      price: order.price,
-      amount: order.amount,
-      totalBuyed: order.totalBuyed,
-      commission: order.commission,
-      commissionAsset: order.commissionAsset,
-      time: order.time
-    }))
+      name: asset.name,
+      amount: asset.amount,
+      averagePrice
+    }
+  })
+
+  const binanceOrdersData = myOrders.map(order => ({
+    userId,
+    originalId: order.originalId,
+    pair: order.pair,
+    price: order.price,
+    amount: order.amount,
+    totalBuyed: order.totalBuyed,
+    commission: order.commission,
+    commissionAsset: order.commissionAsset,
+    time: order.time
+  }))
+
+  await prisma.binanceAssets.createMany({
+    data: binanceAssetsData
+  })
+
+  await prisma.binanceOrders.createMany({
+    data: binanceOrdersData
   })
 
   return res.status(200).end()
