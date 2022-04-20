@@ -1,6 +1,6 @@
 import { RawAccountTrade } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
-import calcAveragePrice from '../../../../lib/binance/averagePrice'
+
 import { balances } from '../../../../lib/binance/balances'
 import { tradeList } from '../../../../lib/binance/orders'
 import { remmaperBalances, RemmaperBalancesType } from '../../../../lib/binance/remmapers/balances'
@@ -11,8 +11,6 @@ import timeout from '../../../../lib/timeout'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = req.body
-
-  // sync balance
 
   const binanceAssets = await prisma.binanceAssets.findMany({
     where: { userId }
@@ -37,20 +35,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
   }
 
-  // await prisma.binanceAssets.createMany({
-  //   data: myBalances.map(asset => ({
-  //     userId,
-  //     name: asset.name,
-  //     amount: asset.amount,
-  //     averagePrice: asset.averagePrice
-  //   }))
-  // })
-
-  // sync orders
-
   let ordersInBinance: RawAccountTrade[] = []
 
-  // const mySymbols = (await prisma.binanceAssets.findMany({ where: { userId } })).map(asset => asset.name)
   const mySymbols = myBalances.map(asset => asset.name)
   const feePairs = (await tradeFee({ userId })).map(fee => fee.symbol)
 
@@ -91,29 +77,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     !ordersInDb.some(db => db.originalId === order.originalId)
   )
 
-  const binanceAssetsData = myBalances.map(asset => {
-    const orders = myOrders
-      .filter(order => order.pair.startsWith(asset.name))
-      .map(order => ({
-        price: order.price,
-        commission: order.commission,
-        qtd: order.amount
-      }))
-
-    const averagePrice = (asset.name.includes('USD') || asset.name.includes('BRL'))
-      ? 0
-      : calcAveragePrice({
-        balance: asset.amount,
-        orders
-      })
-
-    return {
-      userId,
-      name: asset.name,
-      amount: asset.amount,
-      averagePrice
-    }
-  })
+  const binanceAssetsData = myBalances.map(asset => ({
+    userId,
+    name: asset.name,
+    amount: asset.amount,
+    averagePrice: 0
+  }))
 
   const binanceOrdersData = myOrders.map(order => ({
     userId,
@@ -126,6 +95,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     commissionAsset: order.commissionAsset,
     time: order.time
   }))
+
+  console.log('binanceOrdersData', binanceOrdersData)
 
   await prisma.binanceAssets.createMany({
     data: binanceAssetsData
