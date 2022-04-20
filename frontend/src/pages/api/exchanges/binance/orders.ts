@@ -1,8 +1,7 @@
 import { RawAccountTrade } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { RemmaperOrdersType, remmapersOrders } from '../../../../lib/binance/remmapers/orders'
-import { getImage } from '../../../../lib/coinmarketcap'
+import { remmapersOrders } from '../../../../lib/binance/remmapers/orders'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
