@@ -76,11 +76,11 @@ const Orders = () => {
               )
               : (
                 <div className="flex flex-col">
-                  <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full mx-4">
-                          <thead className="border-b text-sm font-medium bg-slate-700 px-6 py-4 text-left">
+                  <div className="overflow-x-auto">
+                    <div className="py-2 inline-block w-full">
+                      <div className="overflow-x-auto px-4">
+                        <table className="text-center w-full">
+                          <thead className="border-b text-sm font-medium bg-slate-700 px-6 py-4">
                             <tr>
                               <th scope="col">
                                 Data
