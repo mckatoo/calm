@@ -14,10 +14,10 @@ export type RemmaperOrdersType = {
 }
 
 const remmapersOrders =
-  async (orders: RawAccountTrade[]): Promise<RemmaperOrdersType[]> => {
-    return await Promise.all(
-
-      orders.map(async order => {
+  async (orders: RawAccountTrade[]): Promise<RemmaperOrdersType[]> => await Promise.all(
+    orders
+      .sort((a, b) => b.time - a.time)
+      .map(async order => {
         const {
           id,
           symbol: pair,
@@ -26,7 +26,7 @@ const remmapersOrders =
           price,
           quoteQty,
           commission,
-          commissionAsset // verify if is base. If not, do convertion of the commission to base
+          commissionAsset
         } = order
 
         return {
@@ -45,7 +45,7 @@ const remmapersOrders =
           )
         }
       })
-    )
-  }
+  )
+
 
 export { remmapersOrders }

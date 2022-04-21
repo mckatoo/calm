@@ -21,7 +21,7 @@ export const mockDbOrders = [
   },
 ]
 
-export const mockBalance = 6.45
+export const mockBalance = 3
 
 export const mockFiltedOrders = [
   {
@@ -33,52 +33,7 @@ export const mockFiltedOrders = [
     price: 2,
     commission: 0.2,
     qtd: 2
-  },
-  {
-    price: 3,
-    commission: 0.3,
-    qtd: 0.28333333
   }
 ]
 
-export const mockExpectedAverage = 1.964467
-
-// export const mockDbOrders = [
-//   {
-//     price: 14,
-//     commission: 20,
-//     qtd: 200
-//   },
-//   {
-//     price: 15,
-//     commission: 20,
-//     qtd: 300
-//   },
-//   {
-//     price: 16,
-//     commission: 20,
-//     qtd: 400
-//   }
-// ]
-
-// export const mockBalance = 13700
-
-// export const mockFiltedOrders = [
-//   {
-//     price: 14,
-//     commission: 20,
-//     qtd: 200
-//   },
-//   {
-//     price: 15,
-//     commission: 20,
-//     qtd: 300
-//   },
-//   {
-//     price: 16,
-//     commission: 20,
-//     qtd: 400
-//   }
-// ]
-
-// export const mockExpectedAverage = 15.28591353
+export const mockExpectedAverage = 1.76666667

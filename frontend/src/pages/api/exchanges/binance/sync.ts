@@ -8,6 +8,7 @@ import { remmapersOrders } from '../../../../lib/binance/remmapers/orders'
 import { tradeFee } from '../../../../lib/binance/tradeFee'
 import { prisma } from '../../../../lib/prisma'
 import timeout from '../../../../lib/timeout'
+import calcAveragePrice from '../../../../lib/binance/averagePrice'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = req.body
@@ -77,12 +78,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     !ordersInDb.some(db => db.originalId === order.originalId)
   )
 
-  const binanceAssetsData = myBalances.map(asset => ({
-    userId,
-    name: asset.name,
-    amount: asset.amount,
-    averagePrice: 0
-  }))
+  const binanceAssetsData = myBalances.map(asset => {
+    const orders = myOrders
+      .filter(order => order.pair.startsWith(asset.name))
+      .map(order => ({
+        price: order.price,
+        commission: order.commission,
+        qtd: order.amount
+      }))
+
+    const averagePrice = (asset.name.includes('USD') || asset.name.includes('BRL'))
+      ? 0
+      : calcAveragePrice({
+        balance: asset.amount,
+        orders
+      })
+
+    return {
+      userId,
+      name: asset.name,
+      amount: asset.amount,
+      averagePrice
+    }
+  })
 
   const binanceOrdersData = myOrders.map(order => ({
     userId,
@@ -95,8 +113,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     commissionAsset: order.commissionAsset,
     time: order.time
   }))
-
-  console.log('binanceOrdersData', binanceOrdersData)
 
   await prisma.binanceAssets.createMany({
     data: binanceAssetsData
