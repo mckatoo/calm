@@ -10,15 +10,10 @@ const calcAveragePrice = ({ balance, orders }: CalcAveragePriceType) => {
   let currentBalance = 0
 
   for (const order of orders) {
-    if (currentBalance + ((order.price * order.qtd) + order.commission) < balance) {
+    if ((currentBalance + order.qtd) <= balance) {
       filteredOrders.push(order)
-      currentBalance += (order.price * order.qtd) + order.commission
+      currentBalance += order.qtd
     } else {
-      filteredOrders.push({
-        price: order.price,
-        commission: order.commission,
-        qtd: parseFloat(((balance - currentBalance - order.commission) / order.price).toFixed(8))
-      })
       break
     }
   }
