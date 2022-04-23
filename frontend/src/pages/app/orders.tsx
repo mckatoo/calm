@@ -22,7 +22,7 @@ const Orders = () => {
       const responseBinance = await fetch("http://localhost:3000/api/exchanges/binance/orders", {
         method: "POST",
         body: JSON.stringify({
-          userId: session.user['userId'],
+          email: session.user['email'],
         }),
         headers: {
           "Content-Type": "application/json"

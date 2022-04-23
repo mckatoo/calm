@@ -1,9 +1,10 @@
-import { GetServerSideProps } from "next"
-import { getSession, signIn } from "next-auth/react"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { FormEvent, useState } from "react"
-import Loader from "../components/Loader"
+import { GetServerSideProps } from 'next'
+import { getSession, signIn } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { FormEvent, useState } from 'react'
+
+import Loader from '../components/Loader'
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
@@ -22,8 +23,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
 export default function Login() {
   const routes = useRouter()
-  const [loading, setLoading] = useState(false);
-  const [formError, setFormError] = useState('');
+  const [loading, setLoading] = useState(false)
+  const [formError, setFormError] = useState('')
 
   function handleGoogleSignIn() {
     signIn('google')

@@ -1,6 +1,7 @@
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+
 import Logo from '../Logo'
 
 const TopMenu = () => {
@@ -18,7 +19,7 @@ const TopMenu = () => {
       "http://localhost:3000/api/exchanges/binance/sync",
       {
         method: "POST",
-        body: JSON.stringify({ userId: session.user['userId'] }),
+        body: JSON.stringify({ email: session.user['email'] }),
         headers: {
           "Content-Type": "application/json"
         }
