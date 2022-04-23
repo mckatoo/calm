@@ -4,7 +4,11 @@ import { remmaperBalances } from '../../../../lib/binance/remmapers/balances'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userId } = req.body
+  const { email } = req.body
+
+  const { id: userId } = await prisma.user.findUnique({
+    where: { email }
+  })
 
   const dbAssets = await prisma.binanceAssets.findMany({
     where: { userId }

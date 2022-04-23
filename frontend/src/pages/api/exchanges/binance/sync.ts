@@ -11,7 +11,11 @@ import timeout from '../../../../lib/timeout'
 import calcAveragePrice from '../../../../lib/binance/averagePrice'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userId } = req.body
+  const { email } = req.body
+
+  const { id: userId } = await prisma.user.findUnique({
+    where: { email }
+  })
 
   const binanceAssets = await prisma.binanceAssets.findMany({
     where: { userId }

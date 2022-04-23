@@ -5,7 +5,11 @@ import { remmapersOrders } from '../../../../lib/binance/remmapers/orders'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userId, symbol } = req.body
+  const { email, symbol } = req.body
+
+  const { id: userId } = await prisma.user.findUnique({
+    where: { email }
+  })
 
   let ordersInDb: RawAccountTrade[] = []
 

@@ -24,7 +24,7 @@ const App = () => {
         "http://localhost:3000/api/exchanges/binance/balance",
         {
           method: "POST",
-          body: JSON.stringify({ userId: session.user['userId'] }),
+          body: JSON.stringify({ email: session.user['email'] }),
           headers: {
             "Content-Type": "application/json"
           }
