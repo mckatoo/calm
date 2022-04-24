@@ -35,14 +35,16 @@ const remmaperBalances =
               )
             )?.price?.toString()
           ) || 0
+        const averagePrice = assetBal.averagePrice
+        const roi = averagePrice === 0 ? 0 : parseFloat(((amount * price - amount * averagePrice) / (amount * averagePrice)).toFixed(2))
 
         return {
           name: assetBal.coin,
           image,
           amount,
           price,
-          averagePrice: assetBal.averagePrice,
-          roi: 0
+          averagePrice,
+          roi
         }
       })
     )
