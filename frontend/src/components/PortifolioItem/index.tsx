@@ -48,7 +48,9 @@ const PortifolioItem = ({
         </div>
         <div className="text-center flex flex-col justify-around min-w-fit">
           <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center rounded-tr-md">Roi</h4>
+          <div className={roi < 0 ? 'bg-red-700' : 'bg-green-700'}>
           {`${roi}%`}
+          </div>
         </div>
       </div>
     </div>
