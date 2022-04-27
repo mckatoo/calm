@@ -1,5 +1,6 @@
-import '../styles/global.css'
 import { SessionProvider } from 'next-auth/react'
+import { BalanceProvider } from '../hooks/use-balance'
+import '../styles/global.css'
 
 function MyApp({
   Component,
@@ -7,9 +8,11 @@ function MyApp({
 }) {
   return (
     <SessionProvider session={session}>
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800">
-        <Component {...pageProps} />
-      </div>
+      <BalanceProvider>
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800">
+          <Component {...pageProps} />
+        </div>
+      </BalanceProvider>
     </SessionProvider>
   )
 }
