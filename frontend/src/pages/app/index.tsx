@@ -6,9 +6,11 @@ import Loader from '../../components/Loader'
 import PortifolioItem, { PortifolioItemProps } from '../../components/PortifolioItem'
 import SideMenu from '../../components/SideMenu'
 import TopMenu from '../../components/TopMenu'
+import { useBalance } from '../../hooks/use-balance'
 
 const App = () => {
   const { data: session, status } = useSession()
+  const { loading: loadingBalance } = useBalance()
 
   const [portifolios, setPortifolios] = useState<PortifolioItemProps[]>([])
   const [formError, setFormError] = useState('')
@@ -40,15 +42,15 @@ const App = () => {
       }
     }
 
-    getBalances()
+    if (!loadingBalance)
+      getBalances()
 
     return () => {
       setLoading(false)
-      setPortifolios([])
       setFormSuccess('')
       setFormError('')
     }
-  }, [session])
+  }, [session, loadingBalance])
 
   if (status === "loading")
     return (
