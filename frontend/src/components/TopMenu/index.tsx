@@ -1,4 +1,5 @@
 import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useBalance } from '../../hooks/use-balance'
@@ -135,26 +136,38 @@ const TopMenu = () => {
             </div>
           </button>
         </div>
-        <menu aria-label='User Menu' className='text-center'>
+        <menu aria-label='User Menu' className='
+            text-center 
+            border-2
+            border-transparent
+            focus:border-2
+            focus:border-dashed
+            focus:border-orange-50
+            rounded-md
+          '>
           <button className={`
           flex
           gap-2
           px-2
-          border-2
-          border-transparent
-          focus:border-2
-          focus:border-dashed
-          focus:border-orange-50
-          rounded-md
           items-center
+          h-14
         `} onClick={() => { setIsOpenUserMenu(!isOpenUserMenu) }}>
             <span className='hidden md:flex'>
               {session.user.name}
             </span>
             <span className='md:hidden'>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd" />
-              </svg>
+              {session.user.image
+                ? (
+                  <div className='h-14 w-14 m-2'>
+                    <Image src={session.user.image} className='rounded-full' alt={session.user.name} width="56" height="56" />
+                  </div>
+                )
+                : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd" />
+                  </svg>
+                )
+              }
             </span>
             <span className='hidden md:flex text-3xl'>{isOpenUserMenu ? '▲' : '▼'}</span>
           </button>
