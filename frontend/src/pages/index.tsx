@@ -100,7 +100,7 @@ export default function Login() {
             </div>
           </div>
 
-          <p className="text-center text-lg pt-2">
+          {/* <p className="text-center text-lg pt-2">
             OR
           </p>
 
@@ -112,7 +112,7 @@ export default function Login() {
               type="text"
               name="binance-key"
               className="w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
-          </div>
+          </div> */}
 
           <div className="text-sm font-sans font-medium pt-4">
             <button
