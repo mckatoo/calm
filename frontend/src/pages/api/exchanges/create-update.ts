@@ -5,12 +5,14 @@ import { prisma } from '../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
-    userId,
+    email,
     binanceKey,
     binanceSecret
   } = req.body
 
   if (!binanceKey) return res.status(400).json({ error: "Api Key required" })
+
+  const { id: userId } = await prisma.user.findUnique({ where: { email } })
 
   const exchanges = await prisma.exchanges.findFirst({
     where: {
