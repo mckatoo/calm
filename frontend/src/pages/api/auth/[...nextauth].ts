@@ -2,6 +2,9 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import FacebookProvider from 'next-auth/providers/facebook'
 import GoogleProvider from 'next-auth/providers/google'
+import { prisma } from '../../../lib/prisma'
+import * as bcrypt from "bcrypt"
+import { randomBytes } from 'crypto'
 
 type AuthorizeInputProps = {
   username: string
@@ -45,6 +48,25 @@ export default NextAuth({
     session: async ({ session, token, user }) => {
       if (!!token.userId) session.user['userId'] = token.userId
       if (!!token.username) session.user['username'] = token.username
+
+      const userExist = await prisma.user.findUnique({ where: { email: session.user.email } })
+
+      if (!userExist) {
+        const saltRounds = 10
+        const salt = await bcrypt.genSalt(saltRounds)
+        const password = randomBytes(8).toString('hex')
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        await prisma.user.create({
+          data: {
+            email: session.user.email,
+            username: session.user.email.split('@')[0],
+            name: session.user.name,
+            password: hashedPassword,
+            image: session.user.image
+          }
+        })
+      }
 
       return session
     },
