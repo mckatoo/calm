@@ -17,6 +17,7 @@ const TopMenu = () => {
   const { sync, loading, isFailSync } = useBalance()
 
   useEffect(() => {
+    setStyleFailOnSync('hidden')
     if (loading) {
       setSpin('animate-spin')
     } else {
