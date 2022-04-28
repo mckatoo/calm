@@ -46,8 +46,9 @@ const Profile = () => {
 
   const updateExchanges = async (event: FormEvent) => {
     event.preventDefault()
+
     const exchanges = {
-      userId: session.user['userId'],
+      email: session.user['email'],
       binanceKey: binance.apiKey,
       binanceSecret: binance.secretKey
     }
