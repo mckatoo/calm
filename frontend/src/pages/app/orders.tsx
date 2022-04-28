@@ -19,7 +19,7 @@ const Orders = () => {
       if (!session) return
 
       setLoading(true)
-      const responseBinance = await fetch("http://localhost:3000/api/exchanges/binance/orders", {
+      const responseBinance = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exchanges/binance/orders`, {
         method: "POST",
         body: JSON.stringify({
           email: session.user['email'],

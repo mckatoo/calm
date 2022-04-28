@@ -32,7 +32,7 @@ export default function SignUp() {
       repeatPassword: event.currentTarget['repeat-password']?.value,
       username: event.currentTarget['username']?.value,
     }
-    const response = await fetch("http://localhost:3000/api/user/create", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/create`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {

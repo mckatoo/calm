@@ -23,7 +23,7 @@ const App = () => {
 
       setLoading(true)
       const response = await fetch(
-        "http://localhost:3000/api/exchanges/binance/balance",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/exchanges/binance/balance`,
         {
           method: "POST",
           body: JSON.stringify({ email: session.user['email'] }),

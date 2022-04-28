@@ -28,7 +28,7 @@ const Profile = () => {
       repeatPassword: event.currentTarget['repeat-password']?.value,
       username: session.user['username'],
     }
-    const response = await fetch("http://localhost:3000/api/user/update", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/update`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
@@ -51,7 +51,7 @@ const Profile = () => {
       binanceKey: binance.apiKey,
       binanceSecret: binance.secretKey
     }
-    const response = await fetch("http://localhost:3000/api/exchanges/create-update", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exchanges/create-update`, {
       method: "POST",
       body: JSON.stringify(exchanges),
       headers: {
