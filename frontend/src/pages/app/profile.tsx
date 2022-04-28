@@ -119,7 +119,7 @@ const Profile = () => {
                       </div>
                     </div>
                   </fieldset>
-                  <fieldset className='flex gap-4 p-4 border-2 border-solid rounded-md' disabled>
+                  {/* <fieldset className='flex gap-4 p-4 border-2 border-solid rounded-md' disabled>
                     <legend className='px-2'>FTX - não implementada</legend>
                     <div className='flex gap-4'>
                       <div>
@@ -141,7 +141,7 @@ const Profile = () => {
                           className="w-full bg-black py-3 px-4 border hover:border-gray-500 rounded shadow text-base font-sans" />
                       </div>
                     </div>
-                  </fieldset>
+                  </fieldset> */}
 
                   <button type='submit' className='px-4 p-2 w-full place-content-center mt-4 bg-orange-700 rounded-md flex font-semibold'>Salvar</button>
 
