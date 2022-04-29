@@ -5,7 +5,8 @@ const nextConfig = {
     domains: [
       'lh3.googleusercontent.com',
       'platform-lookaside.fbsbx.com',
-      's2.coinmarketcap.com'
+      's2.coinmarketcap.com',
+      'ik.imagekit.io'
     ],
   },
 }
