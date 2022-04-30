@@ -1,5 +1,3 @@
-// import ImageKit from 'imagekit'
-
 import { getImageUrl } from "../imagekit"
 
 // type GetSymbolUrlProps = {

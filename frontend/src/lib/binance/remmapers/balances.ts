@@ -22,7 +22,8 @@ const remmaperBalances =
         const locked = parseFloat(assetBal.locked?.toString()) || 0
         const amount = parseFloat((free + locked).toString())
 
-        const image = await getImage(assetBal.coin)
+        // const image = await getImage(assetBal.coin)
+        const image = 'https://ik.imagekit.io/povo8thngv/calm/system/not-found.webp?ik-sdk-version=javascript-1.4.3&updatedAt=1651240746571'
 
         const price = !!(assetBal.coin === 'USDT')
           ? 1

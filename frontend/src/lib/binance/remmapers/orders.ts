@@ -29,6 +29,13 @@ const remmapersOrders =
           commissionAsset
         } = order
 
+        const icon = 'https://ik.imagekit.io/povo8thngv/calm/system/not-found.webp?ik-sdk-version=javascript-1.4.3&updatedAt=1651240746571'
+        // const icon = await getImage(
+        //   pair.startsWith(commissionAsset)
+        //     ? commissionAsset
+        //     : pair.substring(0, 3) || pair.substring(0, 4)
+        // )
+
         return {
           originalId: `${id}`,
           pair,
@@ -38,11 +45,7 @@ const remmapersOrders =
           commission: parseFloat(commission.toString()),
           commissionAsset,
           time: new Date(time),
-          icon: await getImage(
-            pair.startsWith(commissionAsset)
-              ? commissionAsset
-              : pair.substring(0, 3) || pair.substring(0, 4)
-          )
+          icon
         }
       })
   )
