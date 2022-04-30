@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { FormEvent, useState } from 'react'
 
 import Loader from '../components/Loader'
+import Logo from '../components/Logo'
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
@@ -140,13 +141,13 @@ export default function Login() {
 
       <div className="p-4 hidden md:grid grid-rows-3 text-white font-sans font-bold bg-cover bg-[url('/images/login.jpg')]">
         <div className="row-start-1">
-          logotipo
+          <Logo size='large'/>
         </div>
-        <div className="row-start-2">
+        <div className="row-start-2 text-6xl text-right">
           <p>KEEP</p>
           <p>CALM</p>
           <p>{'&'}</p>
-          <p>ORGANIZE YOUR CRYPTOCURRENCIES.</p>
+          <p className='text-4xl'>ORGANIZE YOUR CRYPTOCURRENCIES.</p>
         </div>
       </div>
 
