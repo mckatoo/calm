@@ -67,7 +67,7 @@ export default function Login() {
 
   return (
     <div className='grid md:grid-cols-2 text-white font-sans font-bold'>
-      <div className="grid grid-flow-col min-h-screen items-center justify-items-center">
+      <div className="grid grid-flow-col h-screen p-4 items-center justify-items-center">
         <form onSubmit={handleSubmit}>
           <p className="text-center text-4xl">
             WELCOME
@@ -89,7 +89,7 @@ export default function Login() {
               type="password"
               name="password"
               className=" w-full bg-black py-3 px-4 border hover: border-gray-500 rounded shadow text-base font-sans" />
-            <div className="grid grid-cols-2 space-x-3">
+            <div className="grid grid-cols-2 mt-4">
               <a href="" className="text-sm font-sans font-medium text-gray-600 underline">
                 {'Forgot password?'}
               </a>
@@ -139,7 +139,7 @@ export default function Login() {
         </form>
       </div>
 
-      <div className="p-4 hidden md:grid grid-rows-3 text-white font-sans font-bold bg-cover bg-[url('/images/login.jpg')]">
+      <div className="p-4 h-screen hidden md:grid grid-rows-3 text-white font-sans font-bold bg-cover bg-[url('/images/login.jpg')]">
         <div className="row-start-1">
           <Logo size='large'/>
         </div>
