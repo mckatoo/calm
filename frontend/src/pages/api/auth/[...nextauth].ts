@@ -66,6 +66,16 @@ export default NextAuth({
             image: session.user.image
           }
         })
+      } else {
+        await prisma.user.update({
+          data: {
+            email: !!userExist.email ? userExist.email : session.user.email,
+            username: !!userExist.username ? userExist.username : session.user.email.split('@')[0],
+            name: !!userExist.name ? userExist.name : session.user.name,
+            image: !!userExist.image ? userExist.image : session.user.image
+          },
+          where: { id: userExist.id }
+        })
       }
 
       return session
