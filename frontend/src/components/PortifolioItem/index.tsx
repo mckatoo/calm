@@ -33,23 +33,29 @@ const PortifolioItem = ({
           />
         </div>
       </div>
-      <div className="grid grid-cols-4 w-full items-center sd:gap-4">
-        <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center rounded-tl-md">Quantidade</h4>
-          {amount.toFixed(8)}
+      <div className="grid grid-cols-4 w-full sd:w-96 items-center sd:gap-4">
+        <div className="text-center justify-around">
+          <h4 className="bg-slate-700 py-1 rounded-tl-md">Quantidade</h4>
+          <div className="py-1">
+            {amount.toFixed(8)}
+          </div>
         </div>
-        <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center">Preço Médio</h4>
-          {`${formatPrice(averagePrice)}`}
+        <div className="text-center justify-around">
+          <h4 className="bg-slate-700 py-1 sm:h-fit">Preço Médio</h4>
+          <div className="py-1">
+            {`${formatPrice(averagePrice)}`}
+          </div>
         </div>
-        <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center">Preço Atual</h4>
-          {`${formatPrice(price)}`}
+        <div className="text-center justify-around">
+          <h4 className="bg-slate-700 py-1 sm:h-fit">Preço Atual</h4>
+          <div className="py-1">
+            {`${formatPrice(price)}`}
+          </div>
         </div>
-        <div className="text-center flex flex-col justify-around min-w-fit">
-          <h4 className="bg-slate-700 h-14 sm:h-fit flex p-2 items-center justify-center rounded-tr-md">Roi</h4>
-          <div className={roi < 0 ? 'bg-red-700' : 'bg-green-700'}>
-          {`${roi}%`}
+        <div className="text-center justify-around">
+          <h4 className="bg-slate-700 py-1 sm:h-fit rounded-tr-md">Roi</h4>
+          <div className={`${roi < 0 ? 'bg-red-700' : 'bg-green-700'} py-1 rounded-br-md`}>
+            {`${roi}%`}
           </div>
         </div>
       </div>
