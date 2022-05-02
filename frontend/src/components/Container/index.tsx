@@ -3,11 +3,11 @@ const Container = ({ children }) => (
     <div id="main"
       className="main-content 
         rounded-md 
-        mx-2
         flex-1 
         bg-gray-100 
-        md:pb-5"
-    >
+        mt-16
+        md:ml-36
+        ">
       {children}
     </div>
   </section>

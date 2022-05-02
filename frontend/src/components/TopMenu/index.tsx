@@ -28,7 +28,15 @@ const TopMenu = () => {
   }, [loading, isFailSync])
 
   return (
-    <div className="flex items-center py-2 px-0 justify-between">
+    <div className="
+      fixed
+      flex
+      w-full
+      items-center
+      justify-between
+      bg-slate-900
+      z-10
+      ">
       <menu aria-label='Open Side Menu' className='w-14 h-14 cursor-pointer content-center md:hidden' onClick={toggleSideMenu}>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14" viewBox="0 0 20 20" fill="currentColor">
           <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
@@ -40,7 +48,7 @@ const TopMenu = () => {
           bg-gray-100 
           overflow-hidden
           inset-0
-          absolute
+          fixed
           z-50
           text-stone-900
         '>
@@ -101,8 +109,7 @@ const TopMenu = () => {
         absolute 
         left-1/2
         -translate-x-1/2
-        w-14
-        h-14
+        object-center
         cursor-pointer
       `}>
         <Logo size="normal" />
