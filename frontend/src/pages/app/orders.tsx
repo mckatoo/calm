@@ -5,11 +5,13 @@ import Container from '../../components/Container'
 import Loader from '../../components/Loader'
 import SideMenu from '../../components/SideMenu'
 import TopMenu from '../../components/TopMenu'
+import { useSync } from '../../hooks/use-sync'
 import { RemmaperOrdersType } from '../../lib/binance/remmapers/orders'
 import { formatPrice, formatTime } from '../../lib/format'
 
 const Orders = () => {
   const { data: session, status } = useSession()
+  const { loading: loadingSync } = useSync()
   const [Error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [binanceOrders, setBinanceOrders] = useState<RemmaperOrdersType[]>([])
@@ -35,16 +37,18 @@ const Orders = () => {
       } else {
         const orders = await responseBinance.json()
         setBinanceOrders(orders)
+        setLoading(false)
       }
     }
 
-    getOrders().finally(() => setLoading(false))
+    if (!loadingSync)
+      getOrders()
 
     return () => {
-      setBinanceOrders([])
+      setLoading(false)
       setError('')
     }
-  }, [session])
+  }, [session, loadingSync])
 
   if (status === "loading")
     return (

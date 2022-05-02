@@ -1,23 +1,23 @@
 import { useSession } from "next-auth/react"
 import { createContext, useContext, useEffect, useState } from "react"
 
-export type BalanceContextData = {
+export type SyncContextData = {
   isFailSync: boolean
   sync: () => void
   loading: boolean
 }
 
-export const BalanceContext = createContext<BalanceContextData>({
+export const SyncContext = createContext<SyncContextData>({
   isFailSync: false,
   sync: () => null,
   loading: false
 })
 
-export type BalanceProviderProps = {
+export type SyncProviderProps = {
   children: React.ReactNode
 }
 
-const BalanceProvider = ({ children }: BalanceProviderProps) => {
+const SyncProvider = ({ children }: SyncProviderProps) => {
   const [isFailSync, setIsFailSync] = useState(false)
   const [loading, setLoading] = useState(false)
   const { data: session } = useSession()
@@ -42,14 +42,14 @@ const BalanceProvider = ({ children }: BalanceProviderProps) => {
     setIsFailSync(false)
   }, [])
 
-  return <BalanceContext.Provider value={{
+  return <SyncContext.Provider value={{
     isFailSync,
     sync,
     loading
-  }}>{children}</BalanceContext.Provider>
+  }}>{children}</SyncContext.Provider>
 
 }
 
-const useBalance = () => useContext(BalanceContext)
+const useSync = () => useContext(SyncContext)
 
-export { BalanceProvider, useBalance }
+export { SyncProvider, useSync }

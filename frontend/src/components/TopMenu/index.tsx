@@ -2,7 +2,7 @@ import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useBalance } from '../../hooks/use-balance'
+import { useSync } from '../../hooks/use-sync'
 
 import Logo from '../Logo'
 
@@ -15,7 +15,7 @@ const TopMenu = () => {
 
   const toggleSideMenu = () => setIsOpenSideMenu(!isOpenSideMenu)
 
-  const { sync, loading, isFailSync } = useBalance()
+  const { sync, loading, isFailSync } = useSync()
 
   useEffect(() => {
     setStyleFailOnSync('hidden')
