@@ -9,9 +9,17 @@ import { tradeFee } from '../../../../lib/binance/tradeFee'
 import { prisma } from '../../../../lib/prisma'
 import timeout from '../../../../lib/timeout'
 import calcAveragePrice from '../../../../lib/binance/averagePrice'
+import { getToken } from 'next-auth/jwt'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body
+
+  const token = await getToken({
+    req,
+    secret: process.env.SECRET
+  })
+
+  if (!token || (token.email !== email)) return res.status(401).json({ message: "Auth required." })
 
   const { id: userId } = await prisma.user.findUnique({
     where: { email }

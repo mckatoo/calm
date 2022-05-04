@@ -1,11 +1,19 @@
 import { RawAccountTrade } from 'binance'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getToken } from 'next-auth/jwt'
 
 import { remmapersOrders } from '../../../../lib/binance/remmapers/orders'
 import { prisma } from '../../../../lib/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, symbol } = req.body
+
+  const token = await getToken({
+    req,
+    secret: process.env.SECRET
+  })
+
+  if (!token || (token.email !== email)) return res.status(401).json({ message: "Auth required." })
 
   const { id: userId } = await prisma.user.findUnique({
     where: { email }

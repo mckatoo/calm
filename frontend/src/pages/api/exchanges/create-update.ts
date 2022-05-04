@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getToken } from 'next-auth/jwt'
 
 import { encrypt } from '../../../lib/cryptograph'
 import { prisma } from '../../../lib/prisma'
@@ -9,6 +10,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     binanceKey,
     binanceSecret
   } = req.body
+
+  const token = await getToken({
+    req,
+    secret: process.env.SECRET
+  })
+
+  if (!token || (token.email !== email)) return res.status(401).json({ message: "Auth required." })
 
   if (!binanceKey) return res.status(400).json({ error: "Api Key required" })
 
